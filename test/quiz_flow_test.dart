@@ -30,13 +30,14 @@ void main() {
       expect(confirmButton, findsOneWidget);
 
       // Select the first option, then confirm.
-      await tester.tap(find.byKey(const ValueKey('quiz_option_0')));
+      await tester.tap(find.byKey(ValueKey('quiz_${i}_option_0')));
       await tester.pump();
       await tester.tap(confirmButton);
       await tester.pumpAndSettle();
 
-      // Reveal: exactly one option marked correct.
-      expect(find.text('ถูกต้อง'), findsOneWidget);
+      // Reveal: explanation shown for the selected option only (correct or not).
+      final revealCount = find.text('ถูกต้อง').evaluate().length + find.text('ไม่ถูกต้อง').evaluate().length;
+      expect(revealCount, 1);
 
       final nextLabel = i == 4 ? 'ดูผลคะแนน' : 'ข้อถัดไป';
       await tester.tap(find.text(nextLabel));

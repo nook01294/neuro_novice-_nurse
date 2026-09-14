@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.neuronovice" "\0"
-            VALUE "FileDescription", "neuro_novice_nurse" "\0"
+            VALUE "FileDescription", "NeuroNurse" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "neuro_novice_nurse" "\0"
             VALUE "LegalCopyright", "Copyright (C) 2026 com.neuronovice. All rights reserved." "\0"
             VALUE "OriginalFilename", "neuro_novice_nurse.exe" "\0"
-            VALUE "ProductName", "neuro_novice_nurse" "\0"
+            VALUE "ProductName", "NeuroNurse" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

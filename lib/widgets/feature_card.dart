@@ -34,13 +34,13 @@ class FeatureCard extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                item.iconBuilder(72),
-                const SizedBox(height: 16),
+                item.iconBuilder(64),
+                const SizedBox(height: 14),
                 Text(
                   item.title,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    fontSize: 20,
+                    fontSize: 17,
                     fontWeight: FontWeight.bold,
                     color: AppColors.textDark,
                   ),

@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import '../models/quiz_question.dart';
+import '../services/usage_log_service.dart';
 import '../theme/app_theme.dart';
 
 const _optionLetters = ['A', 'B', 'C', 'D'];
@@ -11,10 +12,16 @@ const _optionLetters = ['A', 'B', 'C', 'D'];
 /// Question order and each question's option order are reshuffled every
 /// time this screen is opened.
 class QuizSetScreen extends StatefulWidget {
+  final String setId;
   final String setTitle;
   final List<QuizQuestion> questions;
 
-  const QuizSetScreen({super.key, required this.setTitle, required this.questions});
+  const QuizSetScreen({
+    super.key,
+    required this.setId,
+    required this.setTitle,
+    required this.questions,
+  });
 
   @override
   State<QuizSetScreen> createState() => _QuizSetScreenState();
@@ -69,6 +76,12 @@ class _QuizSetScreenState extends State<QuizSetScreen> {
   void _next() {
     if (_index == _questions.length - 1) {
       setState(() => _finished = true);
+      UsageLogService.instance.logQuizResult(
+        setId: widget.setId,
+        setTitle: widget.setTitle,
+        score: _score,
+        total: _questions.length,
+      );
       return;
     }
     setState(() {
@@ -97,23 +110,45 @@ class _QuizSetScreenState extends State<QuizSetScreen> {
           child: ListView(
             padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
             children: [
-              Text(
-                'คำถามที่ ${_index + 1} จาก ${_questions.length}',
-                style: const TextStyle(
-                  fontSize: 13,
-                  fontWeight: FontWeight.w600,
-                  color: AppColors.textMuted,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Text(
+                      'คำถามที่ ${_index + 1} จาก ${_questions.length}',
+                      style: const TextStyle(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.primaryDark,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+              ClipRRect(
+                borderRadius: BorderRadius.circular(4),
+                child: TweenAnimationBuilder<double>(
+                  duration: const Duration(milliseconds: 300),
+                  curve: Curves.easeOut,
+                  tween: Tween(
+                    begin: 0,
+                    end: (_index + (_answered ? 1 : 0)) / _questions.length,
+                  ),
+                  builder: (context, value, _) => LinearProgressIndicator(
+                    value: value,
+                    minHeight: 6,
+                    backgroundColor: AppColors.fieldFill,
+                    color: AppColors.primary,
+                  ),
                 ),
               ),
-              const SizedBox(height: 6),
-              LinearProgressIndicator(
-                value: (_index + (_answered ? 1 : 0)) / _questions.length,
-                minHeight: 6,
-                borderRadius: BorderRadius.circular(4),
-                backgroundColor: AppColors.fieldFill,
-                color: AppColors.primary,
-              ),
-              const SizedBox(height: 14),
+              const SizedBox(height: 16),
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(16),
@@ -121,16 +156,30 @@ class _QuizSetScreenState extends State<QuizSetScreen> {
                   color: AppColors.cardBackground,
                   borderRadius: BorderRadius.circular(AppColors.cardRadius),
                   boxShadow: AppColors.cardShadow,
+                  border: Border.all(color: AppColors.fieldBorder),
                 ),
-                child: Text(
-                  question.scenario,
-                  style: const TextStyle(fontSize: 15.5, color: AppColors.textDark, height: 1.5),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Icon(Icons.format_quote_rounded, size: 20, color: AppColors.primary.withValues(alpha: 0.5)),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        question.scenario,
+                        style: const TextStyle(fontSize: 15.5, color: AppColors.textDark, height: 1.5),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              const SizedBox(height: 14),
+              const SizedBox(height: 16),
               for (var i = 0; i < question.options.length; i++) ...[
                 _OptionTile(
-                  key: ValueKey('quiz_option_$i'),
+                  // Keyed per-question so Flutter builds fresh tiles (no
+                  // carried-over AnimatedContainer transition) when moving
+                  // to the next question, instead of animating the old
+                  // answered colors into the new question's neutral state.
+                  key: ValueKey('quiz_${_index}_option_$i'),
                   letter: _optionLetters[i],
                   option: question.options[i],
                   selected: _selected == i,
@@ -191,40 +240,52 @@ class _OptionTile extends StatelessWidget {
     Color borderColor = AppColors.fieldBorder;
     Color badgeColor = AppColors.primary.withValues(alpha: 0.15);
     Color badgeTextColor = AppColors.primaryDark;
+    Color tileTint = AppColors.cardBackground;
 
     if (answered) {
       if (option.isCorrect) {
         borderColor = AppColors.primary;
         badgeColor = AppColors.primary.withValues(alpha: 0.18);
         badgeTextColor = AppColors.primaryDark;
+        tileTint = AppColors.primary.withValues(alpha: 0.06);
       } else if (selected) {
         borderColor = AppColors.danger;
         badgeColor = AppColors.danger.withValues(alpha: 0.15);
         badgeTextColor = AppColors.danger;
+        tileTint = AppColors.danger.withValues(alpha: 0.05);
       }
     } else if (selected) {
       borderColor = AppColors.primaryDark;
+      badgeColor = AppColors.primaryDark;
+      badgeTextColor = Colors.white;
     }
 
     return Material(
-      color: AppColors.cardBackground,
-      borderRadius: BorderRadius.circular(14),
+      color: Colors.transparent,
+      borderRadius: BorderRadius.circular(16),
       child: InkWell(
         onTap: answered ? null : onTap,
-        borderRadius: BorderRadius.circular(14),
-        child: Container(
+        borderRadius: BorderRadius.circular(16),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 200),
+          curve: Curves.easeOut,
           padding: const EdgeInsets.all(14),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(14),
+            color: tileTint,
+            borderRadius: BorderRadius.circular(16),
             border: Border.all(color: borderColor, width: selected || (answered && option.isCorrect) ? 2 : 1),
+            boxShadow: selected && !answered
+                ? [BoxShadow(color: AppColors.primaryDark.withValues(alpha: 0.15), blurRadius: 10, offset: const Offset(0, 4))]
+                : null,
           ),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
+                  AnimatedContainer(
+                    duration: const Duration(milliseconds: 200),
                     width: 28,
                     height: 28,
                     alignment: Alignment.center,
@@ -238,6 +299,7 @@ class _OptionTile extends StatelessWidget {
                   Expanded(
                     child: Text(
                       option.choiceText,
+                      textAlign: TextAlign.center,
                       style: const TextStyle(
                         fontSize: 14.5,
                         fontWeight: FontWeight.w600,
@@ -245,23 +307,37 @@ class _OptionTile extends StatelessWidget {
                       ),
                     ),
                   ),
-                  if (answered)
-                    Icon(
-                      option.isCorrect ? Icons.check_circle : (selected ? Icons.cancel : null),
-                      color: option.isCorrect ? AppColors.primaryDark : AppColors.danger,
-                      size: 20,
-                    ),
+                  const SizedBox(width: 12),
+                  SizedBox(
+                    width: 20,
+                    child: answered
+                        ? Icon(
+                            option.isCorrect ? Icons.check_circle : (selected ? Icons.cancel : null),
+                            color: option.isCorrect ? AppColors.primaryDark : AppColors.danger,
+                            size: 20,
+                          )
+                        : null,
+                  ),
                 ],
               ),
-              if (answered) ...[
-                const Divider(height: 20),
+              if (answered && selected) ...[
+                const SizedBox(height: 12),
+                Divider(height: 1, thickness: 1, color: borderColor.withValues(alpha: 0.3)),
+                const SizedBox(height: 12),
                 Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    SizedBox(
-                      width: 70,
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: option.isCorrect
+                            ? AppColors.primary.withValues(alpha: 0.16)
+                            : AppColors.danger.withValues(alpha: 0.12),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
                       child: Text(
                         option.isCorrect ? 'ถูกต้อง' : 'ไม่ถูกต้อง',
+                        textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 12.5,
                           fontWeight: FontWeight.bold,
@@ -269,6 +345,7 @@ class _OptionTile extends StatelessWidget {
                         ),
                       ),
                     ),
+                    const SizedBox(width: 12),
                     Expanded(
                       child: Text(
                         option.explanation,
@@ -296,28 +373,57 @@ class _ScoreSummary extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final passed = score >= (total / 2).ceil();
+    final perfect = score == total;
     final color = passed ? AppColors.primaryDark : AppColors.danger;
+    final message = perfect
+        ? 'ยอดเยี่ยมมาก! ตอบถูกครบทุกข้อ'
+        : (passed ? 'ทำได้ดีมาก ผ่านเกณฑ์แล้ว' : 'ลองทบทวนแล้วทำใหม่อีกครั้งนะ');
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(24),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(passed ? Icons.emoji_events_rounded : Icons.refresh_rounded, size: 72, color: color),
-            const SizedBox(height: 20),
+            Container(
+              width: 108,
+              height: 108,
+              alignment: Alignment.center,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: color.withValues(alpha: 0.12),
+                border: Border.all(color: color.withValues(alpha: 0.25), width: 3),
+              ),
+              child: Icon(
+                perfect
+                    ? Icons.emoji_events_rounded
+                    : (passed ? Icons.check_circle_rounded : Icons.refresh_rounded),
+                size: 56,
+                color: color,
+              ),
+            ),
+            const SizedBox(height: 22),
             const Text(
               'สรุปผลคะแนน',
+              textAlign: TextAlign.center,
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textDark),
             ),
             const SizedBox(height: 8),
             Text(
               'ตอบถูก $score จาก $total ข้อ',
+              textAlign: TextAlign.center,
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: color),
             ),
             const SizedBox(height: 4),
             Text(
               '${(score / total * 100).round()}%',
+              textAlign: TextAlign.center,
               style: const TextStyle(fontSize: 16, color: AppColors.textMuted),
+            ),
+            const SizedBox(height: 10),
+            Text(
+              message,
+              textAlign: TextAlign.center,
+              style: const TextStyle(fontSize: 14, color: AppColors.textMuted, fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 32),
             SizedBox(

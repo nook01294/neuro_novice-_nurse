@@ -65,11 +65,11 @@ class Features {
 
   static final List<FeatureItem> all = [
     gcs,
+    guidelines,
     motorPower,
     pupil,
     icpWarning,
     quizTest,
-    guidelines,
   ];
 
   static final List<FeatureItem> assessment = [gcs, motorPower, pupil];

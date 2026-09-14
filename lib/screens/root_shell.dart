@@ -45,8 +45,7 @@ class _RootShellState extends State<RootShell> {
       // tappable content is padded above it.
       bottomNavigationBar: Container(
         padding: EdgeInsets.only(
-          top: 8,
-          bottom: MediaQuery.of(context).padding.bottom + 8,
+          bottom: MediaQuery.of(context).padding.bottom + 10,
         ),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -103,24 +102,27 @@ class _NavItem extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Pill-shaped indicator above the icon for the selected tab.
+          // Pill-shaped indicator flush with the top edge of the bar for the selected tab.
           AnimatedContainer(
             duration: const Duration(milliseconds: 150),
             height: 5,
-            width: selected ? 46 : 0,
+            width: selected ? 50 : 0,
             decoration: const BoxDecoration(
               color: AppColors.primary,
-              borderRadius: BorderRadius.all(Radius.circular(3)),
+              borderRadius: BorderRadius.only(
+                bottomLeft: Radius.circular(3),
+                bottomRight: Radius.circular(3),
+              ),
             ),
           ),
-          const SizedBox(height: 5),
-          Icon(icon, color: color, size: 25),
-          const SizedBox(height: 2),
+          const SizedBox(height: 10),
+          Icon(icon, color: color, size: 28),
+          const SizedBox(height: 4),
           Text(
             label,
             style: TextStyle(
               color: color,
-              fontSize: 11,
+              fontSize: 12,
               fontWeight: selected ? FontWeight.bold : FontWeight.normal,
             ),
           ),
