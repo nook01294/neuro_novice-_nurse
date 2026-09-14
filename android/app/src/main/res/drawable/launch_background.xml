@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Native launch background: matches the LandingScreen's gradient exactly
+     so there is no white flash before Flutter's first frame paints. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape android:shape="rectangle">
+            <gradient
+                android:startColor="#1E8058"
+                android:centerColor="#2FA06D"
+                android:endColor="#74DBA6"
+                android:angle="315" />
+        </shape>
+    </item>
+</layer-list>

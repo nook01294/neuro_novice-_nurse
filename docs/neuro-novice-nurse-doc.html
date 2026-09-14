@@ -1,0 +1,358 @@
+<title>Neuro Novice Nurse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;500;600;700;900&family=Sarabun:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+  :root{
+    --paper:#f4faf6;
+    --card:#ffffff;
+    --ink:#16302a;
+    --ink-soft:#3f5c52;
+    --muted:#7c9488;
+    --line:#d9ebe1;
+    --primary-dark:#1e8058;
+    --primary:#2fa06d;
+    --primary-light:#74dba6;
+    --mint:#e4f7ec;
+    --accent-wash:#eafbf1;
+    --danger:#e0483c;
+    --danger-wash:#fdeceb;
+    --backdrop:#dcece3;
+    --shadow: 0 24px 60px -30px rgba(20,64,45,.35);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --paper:#0e1a16;
+      --card:#132420;
+      --ink:#eaf5ee;
+      --ink-soft:#bcd6c8;
+      --muted:#7fa08e;
+      --line:#204236;
+      --primary-dark:#5fce97;
+      --primary:#48b880;
+      --primary-light:#2c7a54;
+      --mint:#1a3229;
+      --accent-wash:#132a20;
+      --danger:#ff7a6d;
+      --danger-wash:#3a1a17;
+      --backdrop:#080f0c;
+      --shadow: 0 24px 60px -30px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#0e1a16;
+    --card:#132420;
+    --ink:#eaf5ee;
+    --ink-soft:#bcd6c8;
+    --muted:#7fa08e;
+    --line:#204236;
+    --primary-dark:#5fce97;
+    --primary:#48b880;
+    --primary-light:#2c7a54;
+    --mint:#1a3229;
+    --accent-wash:#132a20;
+    --danger:#ff7a6d;
+    --danger-wash:#3a1a17;
+    --backdrop:#080f0c;
+    --shadow: 0 24px 60px -30px rgba(0,0,0,.6);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--backdrop);
+    color:var(--ink);
+    font-family:'Sarabun','Noto Sans Thai',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    padding:40px 16px 80px;
+  }
+  h1,h2,h3,.eyebrow{ font-family:'Kanit','Noto Sans Thai',sans-serif; }
+
+  .page{
+    max-width:780px;
+    margin:0 auto;
+    background:var(--card);
+    border-radius:22px;
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    border:1px solid var(--line);
+  }
+
+  /* ---------- header ---------- */
+  .hero{
+    padding:44px 48px 32px;
+    background:linear-gradient(135deg,var(--primary-dark),var(--primary) 55%,var(--primary-light));
+    color:#f4fff9;
+    position:relative;
+  }
+  .hero::after{
+    content:"";
+    position:absolute; inset:0;
+    background:radial-gradient(120% 140% at 100% 0%, rgba(255,255,255,.16), transparent 55%);
+    pointer-events:none;
+  }
+  .hero-top{ display:flex; align-items:center; justify-content:space-between; gap:16px; }
+  .badge{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:12.5px; letter-spacing:.06em;
+    background:rgba(255,255,255,.16);
+    border:1px solid rgba(255,255,255,.3);
+    padding:6px 12px; border-radius:999px;
+    font-family:'Kanit',sans-serif; font-weight:500;
+  }
+  .badge svg{ width:14px; height:14px; }
+  .app-glyph{
+    width:56px; height:56px; border-radius:16px;
+    background:rgba(255,255,255,.14);
+    border:1px solid rgba(255,255,255,.35);
+    display:flex; align-items:center; justify-content:center;
+    flex:none;
+  }
+  h1.title{
+    margin:22px 0 6px;
+    font-size:clamp(28px,4vw,38px);
+    font-weight:900;
+    letter-spacing:.01em;
+    text-wrap:balance;
+  }
+  .subtitle{
+    margin:0; max-width:56ch;
+    font-size:15.5px; line-height:1.75;
+    color:rgba(244,255,249,.92);
+  }
+  .meta-row{
+    display:flex; flex-wrap:wrap; gap:10px 26px;
+    margin-top:24px; padding-top:18px;
+    border-top:1px solid rgba(255,255,255,.25);
+    font-size:12.5px;
+  }
+  .meta-row div{ display:flex; flex-direction:column; gap:2px; }
+  .meta-row span.k{ text-transform:uppercase; letter-spacing:.08em; color:rgba(244,255,249,.7); font-size:10.5px; }
+  .meta-row span.v{ font-family:'Kanit',sans-serif; font-size:13.5px; font-weight:500; }
+
+  /* ---------- body ---------- */
+  .content{ padding:6px 48px 8px; }
+  section{ padding:32px 0; border-bottom:1px solid var(--line); }
+  section:last-of-type{ border-bottom:none; }
+
+  .eyebrow{
+    display:flex; align-items:center; gap:10px;
+    font-size:12.5px; font-weight:600; letter-spacing:.09em;
+    text-transform:uppercase; color:var(--primary-dark);
+    margin-bottom:10px;
+  }
+  .eyebrow .dot{ width:7px; height:7px; border-radius:50%; background:var(--primary); flex:none; }
+  h2{ margin:0 0 14px; font-size:21px; font-weight:700; color:var(--ink); text-wrap:balance; }
+  p.lead{ margin:0 0 8px; font-size:15.5px; line-height:1.9; color:var(--ink-soft); max-width:64ch; }
+
+  /* ---------- simple info cards (tech at a glance) ---------- */
+  .info-grid{
+    display:grid; grid-template-columns:1fr 1fr; gap:12px;
+    margin-top:18px;
+  }
+  @media (max-width:560px){ .info-grid{ grid-template-columns:1fr; } }
+  .info-card{
+    border:1px solid var(--line); border-radius:14px;
+    background:var(--paper); padding:16px 18px;
+  }
+  .info-card .k{
+    font-size:11.5px; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--muted); margin-bottom:6px; display:block;
+  }
+  .info-card .v{
+    font-family:'Kanit',sans-serif; font-weight:600; font-size:16px;
+    color:var(--ink); margin-bottom:4px;
+  }
+  .info-card .d{ font-size:13px; line-height:1.6; color:var(--ink-soft); }
+
+  .ai-note{
+    margin-top:16px;
+    background:var(--accent-wash);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:16px 18px;
+    display:flex; gap:12px; align-items:flex-start;
+    font-size:13.6px; line-height:1.8; color:var(--ink-soft);
+  }
+  .ai-note svg{ flex:none; margin-top:2px; width:20px; height:20px; color:var(--primary-dark); }
+  .ai-note b{ color:var(--ink); }
+
+  /* ---------- feature grid ---------- */
+  .group-label{
+    font-family:'Kanit',sans-serif; font-weight:600; font-size:13.5px;
+    color:var(--ink); margin:22px 0 12px;
+    display:flex; align-items:center; gap:8px;
+  }
+  .group-label:first-child{ margin-top:6px; }
+  .group-label .tag{
+    font-size:11px; font-weight:500; letter-spacing:.04em;
+    color:var(--primary-dark); background:var(--mint);
+    border-radius:999px; padding:2px 10px;
+  }
+  .feature-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:560px){ .feature-grid{ grid-template-columns:1fr; } }
+  .feature{
+    border:1px solid var(--line); border-radius:14px;
+    padding:16px 18px; background:var(--paper);
+  }
+  .feature h3{ margin:0 0 6px; font-size:15px; font-weight:600; color:var(--ink); }
+  .feature p{ margin:0; font-size:13.2px; line-height:1.7; color:var(--ink-soft); }
+  .feature.warn{ background:var(--danger-wash); }
+  .feature.warn h3{ color:var(--danger); }
+
+  /* ---------- steps ---------- */
+  .steps{ list-style:none; margin:20px 0 0; padding:0; counter-reset:step; }
+  .steps li{
+    counter-increment:step;
+    position:relative;
+    padding:4px 0 22px 46px;
+    border-left:2px solid var(--line);
+    margin-left:15px;
+  }
+  .steps li:last-child{ border-color:transparent; padding-bottom:2px; }
+  .steps li::before{
+    content:counter(step);
+    position:absolute; left:-15px; top:0;
+    width:30px; height:30px; border-radius:50%;
+    background:var(--primary); color:#fff;
+    font-family:'Kanit',sans-serif; font-weight:700; font-size:13px;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .steps h3{ margin:0 0 4px; font-size:15.5px; font-weight:600; color:var(--ink); }
+  .steps p{ margin:0; font-size:13.8px; line-height:1.8; color:var(--ink-soft); max-width:60ch; }
+
+  footer{
+    padding:26px 48px 34px;
+    display:flex; justify-content:space-between; align-items:center;
+    flex-wrap:wrap; gap:8px;
+    font-size:12px; color:var(--muted);
+  }
+
+  @media print{
+    body{ background:#fff; padding:0; }
+    .page{ box-shadow:none; border:none; border-radius:0; max-width:none; }
+  }
+</style>
+
+<div class="page">
+  <div class="hero">
+    <div class="hero-top">
+      <span class="badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a4 4 0 0 0-4 4v1a3 3 0 0 0-2 5 3 3 0 0 0 1 4 3 3 0 0 0 3 3h4a3 3 0 0 0 3-3 3 3 0 0 0 1-4 3 3 0 0 0-2-5V7a4 4 0 0 0-4-4Z"/></svg>
+        เอกสารประกอบโครงการ
+      </span>
+      <div class="app-glyph">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#f4fff9" stroke-width="1.8"><path d="M9 3a3 3 0 0 0-3 3v.6A2.5 2.5 0 0 0 4.5 9 2.5 2.5 0 0 0 6 11.2v.3A2.5 2.5 0 0 0 5 13.5 2.5 2.5 0 0 0 6.5 16 2.5 2.5 0 0 0 9 18h1"/><path d="M15 3a3 3 0 0 1 3 3v.6A2.5 2.5 0 0 1 19.5 9 2.5 2.5 0 0 1 18 11.2v.3a2.5 2.5 0 0 1 1 2.3 2.5 2.5 0 0 1-1.5 2.2A2.5 2.5 0 0 1 15 18h-1"/><path d="M12 3v18" stroke-dasharray="1 3"/></svg>
+      </div>
+    </div>
+    <h1 class="title">Neuro Novice Nurse</h1>
+    <p class="subtitle">แอปพลิเคชันมือถือสำหรับพยาบาลวิชาชีพใหม่ ใช้ประเมินและติดตามอาการทางระบบประสาทของผู้ป่วย พร้อมคลังแนวทางการพยาบาลอ้างอิงในจุดเดียว</p>
+    <div class="meta-row">
+      <div><span class="k">พัฒนาโดยใช้</span><span class="v">AI ช่วยเขียนโปรแกรม</span></div>
+      <div><span class="k">ใช้งานบน</span><span class="v">มือถือ Android / iPhone</span></div>
+      <div><span class="k">ผู้จัดทำ</span><span class="v">นักศึกษาพยาบาล</span></div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <section>
+      <div class="eyebrow"><span class="dot"></span>ภาพรวม</div>
+      <h2>ระบบนี้คืออะไร</h2>
+      <p class="lead">Neuro Novice Nurse เป็นแอปพลิเคชันมือถือที่ช่วยพยาบาลจบใหม่ในการประเมินและเฝ้าระวังอาการทางระบบประสาทของผู้ป่วย เช่น ระดับความรู้สึกตัว กำลังกล้ามเนื้อ และปฏิกิริยาของรูม่านตา พร้อมทั้งมีคลังความรู้และแนวทางการพยาบาลให้เปิดอ่านทบทวนได้ทันทีจากมือถือ โดยไม่ต้องพกคู่มือเล่มใหญ่</p>
+      <p class="lead">แอปแบ่งการใช้งานเป็น 4 ส่วนหลัก คือ <b>หน้าหลัก</b> (ภาพรวมฟีเจอร์ทั้งหมด), <b>ประเมิน</b> (เครื่องมือประเมินอาการ), <b>ติดตาม</b> (เฝ้าระวังอาการต่อเนื่อง) และ <b>ความรู้</b> (คู่มือแนวทางการพยาบาล)</p>
+    </section>
+
+    <section>
+      <div class="eyebrow"><span class="dot"></span>เทคโนโลยีที่ใช้</div>
+      <h2>พัฒนาด้วยอะไรบ้าง</h2>
+      <p class="lead">ผู้จัดทำเป็นพยาบาลวิชาชีพที่ไม่มีพื้นฐานการเขียนโปรแกรมมาก่อน โครงการนี้จึงพัฒนาโดยใช้ <b>AI เป็นผู้ช่วยเขียนโค้ดทั้งหมด</b> ตามที่อาจารย์ผู้สอนกำหนดให้ใช้ทักษะ AI เสริมในการทำโปรเจกต์ โดยผู้จัดทำมีหน้าที่ออกแบบแนวคิด กำหนดฟีเจอร์ และทดสอบผลลัพธ์</p>
+      <div class="info-grid">
+        <div class="info-card">
+          <span class="k">ภาษาโปรแกรม</span>
+          <div class="v">Dart</div>
+          <div class="d">ภาษาที่ใช้เขียนแอป ทำงานร่วมกับ Flutter</div>
+        </div>
+        <div class="info-card">
+          <span class="k">เฟรมเวิร์ก</span>
+          <div class="v">Flutter</div>
+          <div class="d">เครื่องมือสร้างแอปที่เขียนครั้งเดียว ใช้ได้ทั้ง Android และ iPhone</div>
+        </div>
+        <div class="info-card">
+          <span class="k">ผู้ช่วยพัฒนา</span>
+          <div class="v">AI Coding Assistant</div>
+          <div class="d">ใช้ AI (Claude) เขียนและปรับแก้โค้ดตามที่ผู้จัดทำสั่งงาน</div>
+        </div>
+        <div class="info-card">
+          <span class="k">รูปแบบแอป</span>
+          <div class="v">แอปมือถือ</div>
+          <div class="d">ใช้งานง่าย หน้าตาเรียบ อ่านง่ายสำหรับหน้างานพยาบาล</div>
+        </div>
+      </div>
+      <div class="ai-note">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2 3 7v6c0 5 4 8.5 9 9 5-.5 9-4 9-9V7l-9-5Z"/><path d="m9 12 2 2 4-4"/></svg>
+        <div><b>หมายเหตุ:</b> ผู้จัดทำไม่มีความรู้ด้านการเขียนโค้ดมาก่อน ทุกส่วนของโค้ดถูกสร้างและแก้ไขผ่านการสั่งงาน AI ด้วยภาษาพูดปกติ ผู้จัดทำเน้นบทบาทด้านการออกแบบแนวคิด เนื้อหาทางการพยาบาล และการตรวจสอบความถูกต้องของผลลัพธ์</div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow"><span class="dot"></span>ฟีเจอร์หลัก</div>
+      <h2>สิ่งที่แอปทำได้</h2>
+
+      <div class="group-label">ประเมิน <span class="tag">แท็บประเมิน</span></div>
+      <div class="feature-grid">
+        <div class="feature"><h3>ประเมิน GCS</h3><p>ประเมินระดับความรู้สึกตัวของผู้ป่วย (Glasgow Coma Scale)</p></div>
+        <div class="feature"><h3>Motor Power</h3><p>ประเมินกำลังกล้ามเนื้อของผู้ป่วย</p></div>
+        <div class="feature"><h3>ประเมินรูม่านตา</h3><p>ตรวจขนาดและการตอบสนองต่อแสงของรูม่านตา</p></div>
+      </div>
+
+      <div class="group-label">ติดตาม <span class="tag">แท็บติดตาม</span></div>
+      <div class="feature-grid">
+        <div class="feature warn"><h3>ICP Warning</h3><p>เฝ้าระวังและเตือนภาวะความดันในกะโหลกศีรษะสูง</p></div>
+        <div class="feature"><h3>Neuro Monitoring</h3><p>ติดตามอาการทางระบบประสาทของผู้ป่วยอย่างต่อเนื่อง</p></div>
+      </div>
+
+      <div class="group-label">ความรู้ <span class="tag">แท็บความรู้</span></div>
+      <div class="feature-grid">
+        <div class="feature"><h3>แนวทางการพยาบาล</h3><p>คู่มือและแนวทางการดูแลผู้ป่วยทางระบบประสาท</p></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="eyebrow"><span class="dot"></span>ขั้นตอนการทำงาน</div>
+      <h2>ขั้นตอนการพัฒนาโดยใช้ AI ช่วย</h2>
+      <ol class="steps">
+        <li>
+          <h3>ตั้งโจทย์และออกแบบแนวคิด</h3>
+          <p>ผู้จัดทำกำหนดปัญหาที่พบในหน้างาน (พยาบาลจบใหม่ยังไม่ชำนาญการประเมินระบบประสาท) และวางแนวทางว่าแอปควรมีฟีเจอร์อะไรบ้าง</p>
+        </li>
+        <li>
+          <h3>สั่งงาน AI ด้วยภาษาพูดปกติ</h3>
+          <p>อธิบายความต้องการให้ AI ฟัง เช่น อยากได้หน้าจอแบบไหน มีเมนูอะไรบ้าง โดยไม่ต้องเขียนโค้ดเอง</p>
+        </li>
+        <li>
+          <h3>AI สร้างแอปให้อัตโนมัติ</h3>
+          <p>AI เขียนโค้ด ออกแบบหน้าจอ และจัดวางฟีเจอร์ตามที่สั่งงานไว้ทั้งหมด</p>
+        </li>
+        <li>
+          <h3>ทดลองใช้งานจริง</h3>
+          <p>เปิดแอปทดสอบบนมือถือหรือเครื่องจำลอง เพื่อดูว่าใช้งานได้ตรงตามที่ต้องการหรือไม่</p>
+        </li>
+        <li>
+          <h3>แจ้ง AI แก้ไขและปรับปรุง</h3>
+          <p>เมื่อพบจุดที่อยากแก้ไข (สี ข้อความ การจัดวาง) แจ้ง AI ให้ปรับจนกว่าจะได้ผลลัพธ์ที่พอใจ</p>
+        </li>
+        <li>
+          <h3>ตรวจสอบความถูกต้องและสรุปผล</h3>
+          <p>ตรวจเนื้อหาทางการพยาบาลให้ถูกต้องตามหลักวิชาการ ก่อนสรุปเป็นผลงานฉบับสมบูรณ์</p>
+        </li>
+      </ol>
+    </section>
+
+  </div>
+
+  <footer>
+    <span>Neuro Novice Nurse — เอกสารประกอบโครงการ</span>
+    <span>ปรับปรุงล่าสุด 2 กันยายน 2569</span>
+  </footer>
+</div>
