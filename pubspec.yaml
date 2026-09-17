@@ -66,6 +66,7 @@ flutter:
   assets:
     - assets/icons/
     - assets/images/background_1.jpg
+    - assets/images/back_ground_login.jpg
     - assets/images/baclk_ground_login_new.png
     - assets/images/back_ground_default.png
     - assets/images/back_ground_default_1.png

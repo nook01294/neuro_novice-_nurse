@@ -67,7 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
         children: [
           Positioned.fill(
             child: Image.asset(
-              'assets/images/baclk_ground_login_new.png',
+              'assets/images/back_ground_login.jpg',
               fit: BoxFit.cover,
             ),
           ),
@@ -81,7 +81,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     constraints: BoxConstraints(minHeight: screenHeight * 0.64),
                     child: Container(
                       width: double.infinity,
-                      padding: EdgeInsets.fromLTRB(24, 32, 24, bottomInset + 24),
+                      padding: EdgeInsets.fromLTRB(
+                        24,
+                        32,
+                        24,
+                        bottomInset + 24,
+                      ),
                       decoration: const BoxDecoration(
                         color: AppColors.background,
                         borderRadius: BorderRadius.only(
@@ -135,7 +140,10 @@ class _LoginScreenState extends State<LoginScreen> {
                                         : Icons.visibility_off_outlined,
                                   ),
                                   onPressed: () {
-                                    setState(() => _obscurePassword = !_obscurePassword);
+                                    setState(
+                                      () =>
+                                          _obscurePassword = !_obscurePassword,
+                                    );
                                   },
                                 ),
                               ),
@@ -152,7 +160,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 onPressed: () {
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
-                                      builder: (_) => const ForgotPasswordScreen(),
+                                      builder: (_) =>
+                                          const ForgotPasswordScreen(),
                                     ),
                                   );
                                 },
