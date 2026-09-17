@@ -6,7 +6,9 @@ import '../widgets/app_background.dart';
 /// Observe, Stimulate, Score) nurses follow when performing a Glasgow Coma
 /// Scale assessment.
 class AssessScreen extends StatelessWidget {
-  const AssessScreen({super.key});
+  final ScrollController? scrollController;
+
+  const AssessScreen({super.key, this.scrollController});
 
   @override
   Widget build(BuildContext context) {
@@ -14,6 +16,7 @@ class AssessScreen extends StatelessWidget {
       title: 'ขั้นตอนการประเมิน GCS',
       automaticallyImplyLeading: false,
       body: ListView(
+        controller: scrollController,
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
         children: const [
           _IntroText(),

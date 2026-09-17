@@ -34,14 +34,14 @@ class PlaceholderDetailScreen extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.textOnBackground,
+                  color: AppColors.textDark,
                 ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 12),
               Text(
                 description,
-                style: const TextStyle(fontSize: 15, color: AppColors.textOnBackground),
+                style: const TextStyle(fontSize: 15, color: AppColors.textDark),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 32),

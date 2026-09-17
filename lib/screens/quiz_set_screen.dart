@@ -124,7 +124,7 @@ class _QuizSetScreenState extends State<QuizSetScreen> {
                       style: const TextStyle(
                         fontSize: 13,
                         fontWeight: FontWeight.w700,
-                        color: AppColors.primaryDark,
+                        color: AppColors.textOnBackground,
                       ),
                     ),
                   ),
@@ -405,7 +405,7 @@ class _ScoreSummary extends StatelessWidget {
             const Text(
               'สรุปผลคะแนน',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textOnBackground),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textDark),
             ),
             const SizedBox(height: 8),
             Text(
@@ -417,13 +417,13 @@ class _ScoreSummary extends StatelessWidget {
             Text(
               '${(score / total * 100).round()}%',
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 16, color: AppColors.textOnBackground),
+              style: const TextStyle(fontSize: 16, color: AppColors.textDark),
             ),
             const SizedBox(height: 10),
             Text(
               message,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 14, color: AppColors.textOnBackground, fontWeight: FontWeight.w500),
+              style: const TextStyle(fontSize: 14, color: AppColors.textDark, fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 32),
             SizedBox(

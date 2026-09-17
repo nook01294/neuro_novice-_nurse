@@ -5,7 +5,9 @@ import '../theme/app_theme.dart';
 import '../widgets/app_background.dart';
 
 class SettingsScreen extends StatelessWidget {
-  const SettingsScreen({super.key});
+  final ScrollController? scrollController;
+
+  const SettingsScreen({super.key, this.scrollController});
 
   Future<void> _confirmSignOut(BuildContext context) async {
     final confirmed = await showDialog<bool>(
@@ -41,6 +43,7 @@ class SettingsScreen extends StatelessWidget {
       title: 'ตั้งค่า',
       automaticallyImplyLeading: false,
       body: ListView(
+        controller: scrollController,
         padding: const EdgeInsets.all(16),
         children: [
           Container(

@@ -4,13 +4,16 @@ import '../theme/app_theme.dart';
 import '../widgets/feature_card.dart';
 
 class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+  final ScrollController? scrollController;
+
+  const HomeScreen({super.key, this.scrollController});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
       body: CustomScrollView(
+        controller: scrollController,
         slivers: [
           SliverToBoxAdapter(child: _Header()),
           SliverPadding(

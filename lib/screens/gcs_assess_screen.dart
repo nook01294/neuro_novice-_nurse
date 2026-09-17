@@ -67,7 +67,7 @@ class _GcsAssessScreenState extends State<GcsAssessScreen> {
           const SizedBox(height: 12),
           Text(
             GcsData.source,
-            style: const TextStyle(fontSize: 11, color: AppColors.textOnBackground),
+            style: const TextStyle(fontSize: 11, color: AppColors.textMuted),
           ),
           const SizedBox(height: 12),
         ],

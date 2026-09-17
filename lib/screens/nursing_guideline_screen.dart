@@ -523,7 +523,7 @@ class _FooterNote extends StatelessWidget {
       child: Text(
         'ใช้เพื่อสนับสนุนการประเมิน ไม่ใช่แทนวิจารณญาณทางคลินิก',
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 11.5, color: AppColors.textOnBackground),
+        style: TextStyle(fontSize: 11.5, color: AppColors.textMuted),
       ),
     );
   }

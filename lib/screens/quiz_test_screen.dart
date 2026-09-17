@@ -66,7 +66,7 @@ class QuizTestScreen extends StatelessWidget {
               SizedBox(width: 8),
               Text(
                 'เลือกชุดข้อสอบ',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.textOnBackground),
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.textDark),
               ),
             ],
           ),

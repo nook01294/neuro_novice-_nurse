@@ -5,7 +5,9 @@ import '../widgets/app_background.dart';
 /// "Nursing Care" tab — the 6-step nursing-care guideline for preventing
 /// and reducing increased intracranial pressure.
 class MonitorScreen extends StatelessWidget {
-  const MonitorScreen({super.key});
+  final ScrollController? scrollController;
+
+  const MonitorScreen({super.key, this.scrollController});
 
   @override
   Widget build(BuildContext context) {
@@ -13,13 +15,13 @@ class MonitorScreen extends StatelessWidget {
       title: 'Nursing Care for IICP',
       automaticallyImplyLeading: false,
       body: ListView(
+        controller: scrollController,
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
         children: const [
           _IntroText(),
           SizedBox(height: 16),
           _NursingCareCard(
             number: '1',
-            icon: Icons.psychology_rounded,
             title: 'เฝ้าระวังอาการทางระบบประสาท',
             description:
                 'สังเกตและบันทึกอาการและอาการแสดงทางระบบประสาทและสัญญาณซีพที่เป็น'
@@ -36,7 +38,6 @@ class MonitorScreen extends StatelessWidget {
           SizedBox(height: 12),
           _NursingCareCard(
             number: '2',
-            icon: Icons.air_rounded,
             title: 'ดูแลการระบายอากาศและทางเดินหายใจ',
             description:
                 'ดูแลให้มีการระบายอากาศปอดได้อย่างเพียงพอและป้องกันการอุดตันใน'
@@ -54,7 +55,6 @@ class MonitorScreen extends StatelessWidget {
           SizedBox(height: 12),
           _NursingCareCard(
             number: '3',
-            icon: Icons.arrow_upward_rounded,
             title: 'เพิ่มการไหลกลับของหลอดเลือดดำ',
             description: 'เพิ่มการไหลกลับของหลอดเลือดดำจากสมองกลับสู่หัวใจ',
             items: [
@@ -68,7 +68,6 @@ class MonitorScreen extends StatelessWidget {
           SizedBox(height: 12),
           _NursingCareCard(
             number: '4',
-            icon: Icons.block_rounded,
             title: 'ป้องกัน Valsalva Maneuver',
             description:
                 'จัดการสาเหตุที่ทำให้เกิดความดันในช่องอกและช่องท้องเพิ่มมากขึ้น '
@@ -84,7 +83,6 @@ class MonitorScreen extends StatelessWidget {
           SizedBox(height: 12),
           _NursingCareCard(
             number: '5',
-            icon: Icons.thermostat_rounded,
             title: 'จัดการกับภาวะไข้',
             description:
                 'จัดการกับภาวะไข้ เนื่องจากอุณหภูมิที่เพิ่มมากขึ้นทุก ๆ 1 องศา '
@@ -98,7 +96,6 @@ class MonitorScreen extends StatelessWidget {
           SizedBox(height: 12),
           _NursingCareCard(
             number: '6',
-            icon: Icons.circle_outlined,
             title: 'ดูแลอุปกรณ์พยุงคอ',
             description:
                 'ดูแลให้ผู้ป่วยสวมอุปกรณ์พยุงคอ (Hard or Soft Collar) อย่างเหมาะสม '
@@ -131,14 +128,12 @@ class _IntroText extends StatelessWidget {
 /// title header, an optional lead-in description, then a bullet list.
 class _NursingCareCard extends StatelessWidget {
   final String number;
-  final IconData icon;
   final String title;
   final String description;
   final List<String> items;
 
   const _NursingCareCard({
     required this.number,
-    required this.icon,
     required this.title,
     required this.description,
     required this.items,
@@ -177,8 +172,6 @@ class _NursingCareCard extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(width: 10),
-              Icon(icon, size: 22, color: AppColors.primaryDark),
               const SizedBox(width: 10),
               Expanded(
                 child: Text(

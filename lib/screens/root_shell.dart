@@ -18,12 +18,30 @@ class RootShell extends StatefulWidget {
 class _RootShellState extends State<RootShell> {
   int _index = 0;
 
-  static const _tabs = [
-    HomeScreen(),
-    AssessScreen(),
-    MonitorScreen(),
-    SettingsScreen(),
+  final _scrollControllers = List.generate(4, (_) => ScrollController());
+
+  late final _tabs = [
+    HomeScreen(scrollController: _scrollControllers[0]),
+    AssessScreen(scrollController: _scrollControllers[1]),
+    MonitorScreen(scrollController: _scrollControllers[2]),
+    SettingsScreen(scrollController: _scrollControllers[3]),
   ];
+
+  @override
+  void dispose() {
+    for (final controller in _scrollControllers) {
+      controller.dispose();
+    }
+    super.dispose();
+  }
+
+  void _selectTab(int i) {
+    setState(() => _index = i);
+    final controller = _scrollControllers[i];
+    if (controller.hasClients) {
+      controller.jumpTo(0);
+    }
+  }
 
   static const _labels = [
     'หน้าหลัก',
@@ -47,7 +65,7 @@ class _RootShellState extends State<RootShell> {
       // tappable content is padded above it.
       bottomNavigationBar: Container(
         padding: EdgeInsets.only(
-          bottom: MediaQuery.of(context).padding.bottom + 10,
+          bottom: MediaQuery.of(context).padding.bottom + 4,
         ),
         decoration: BoxDecoration(
           color: Colors.white,
@@ -72,7 +90,7 @@ class _RootShellState extends State<RootShell> {
                 icon: _icons[i],
                 label: _labels[i],
                 selected: selected,
-                onTap: () => setState(() => _index = i),
+                onTap: () => _selectTab(i),
               ),
             );
           }),
