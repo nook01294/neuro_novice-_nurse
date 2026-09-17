@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import '../models/quiz_question.dart';
 import '../services/usage_log_service.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_background.dart';
 
 const _optionLetters = ['A', 'B', 'C', 'D'];
 
@@ -93,9 +94,8 @@ class _QuizSetScreenState extends State<QuizSetScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(title: Text(widget.setTitle)),
+    return BackgroundScaffold(
+      title: widget.setTitle,
       body: SafeArea(
         child: _finished ? _ScoreSummary(score: _score, total: _questions.length, onRetry: _restart) : _buildQuestion(),
       ),
@@ -405,7 +405,7 @@ class _ScoreSummary extends StatelessWidget {
             const Text(
               'สรุปผลคะแนน',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textDark),
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: AppColors.textOnBackground),
             ),
             const SizedBox(height: 8),
             Text(
@@ -417,13 +417,13 @@ class _ScoreSummary extends StatelessWidget {
             Text(
               '${(score / total * 100).round()}%',
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 16, color: AppColors.textMuted),
+              style: const TextStyle(fontSize: 16, color: AppColors.textOnBackground),
             ),
             const SizedBox(height: 10),
             Text(
               message,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 14, color: AppColors.textMuted, fontWeight: FontWeight.w500),
+              style: const TextStyle(fontSize: 14, color: AppColors.textOnBackground, fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 32),
             SizedBox(

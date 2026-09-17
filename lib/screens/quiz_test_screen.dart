@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../data/quiz_questions.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_background.dart';
 import 'quiz_set_screen.dart';
 
 /// Entry point for the Quiz Test feature: shows the instructions once,
@@ -10,9 +11,8 @@ class QuizTestScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(title: const Text('Quiz Test')),
+    return BackgroundScaffold(
+      title: 'Quiz Test',
       body: ListView(
         padding: const EdgeInsets.all(16),
         children: [
@@ -66,7 +66,7 @@ class QuizTestScreen extends StatelessWidget {
               SizedBox(width: 8),
               Text(
                 'เลือกชุดข้อสอบ',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.textDark),
+                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.textOnBackground),
               ),
             ],
           ),

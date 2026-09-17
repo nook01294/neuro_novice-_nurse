@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_background.dart';
 import '../widgets/head_injury_guideline.dart';
 
 /// Nursing care guideline for Severe Head Injury (GCS 3–8): immediate
@@ -20,9 +21,8 @@ class SevereHeadInjuryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(title: const Text('Severe Head Injury')),
+    return BackgroundScaffold(
+      title: 'Severe Head Injury',
       body: ListView(
         padding: EdgeInsets.zero,
         children: [
@@ -36,7 +36,7 @@ class SevereHeadInjuryScreen extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.primaryDark,
+                    color: AppColors.textOnBackground,
                   ),
                 ),
                 const SizedBox(height: 12),

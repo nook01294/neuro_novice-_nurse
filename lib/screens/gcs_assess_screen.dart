@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import '../models/gcs_option.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_background.dart';
+import 'mild_head_injury_screen.dart';
+import 'moderate_head_injury_screen.dart';
 import 'nursing_guideline_screen.dart';
+import 'severe_head_injury_screen.dart';
 
 /// ประเมิน GCS (Glasgow Coma Scale) — เลือกการตอบสนองที่ดีที่สุดในแต่ละหมวด
 /// (Eye / Verbal / Motor) แล้วแอปจะรวมคะแนนและประเมินความรุนแรงให้อัตโนมัติ
@@ -39,18 +43,15 @@ class _GcsAssessScreenState extends State<GcsAssessScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('ประเมิน GCS'),
-        actions: [
-          IconButton(
-            tooltip: 'เริ่มใหม่',
-            onPressed: _selected.values.any((o) => o != null) ? _reset : null,
-            icon: const Icon(Icons.refresh),
-          ),
-        ],
-      ),
+    return BackgroundScaffold(
+      title: 'ประเมิน GCS',
+      actions: [
+        IconButton(
+          tooltip: 'เริ่มใหม่',
+          onPressed: _selected.values.any((o) => o != null) ? _reset : null,
+          icon: const Icon(Icons.refresh),
+        ),
+      ],
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
         children: [
@@ -62,11 +63,11 @@ class _GcsAssessScreenState extends State<GcsAssessScreen> {
             ),
             const SizedBox(height: 12),
           ],
-          const _NursingGuidelineButton(),
+          _NursingGuidelineButton(total: _total),
           const SizedBox(height: 12),
           Text(
             GcsData.source,
-            style: const TextStyle(fontSize: 11, color: AppColors.textMuted),
+            style: const TextStyle(fontSize: 11, color: AppColors.textOnBackground),
           ),
           const SizedBox(height: 12),
         ],
@@ -163,8 +164,24 @@ class _GcsCategoryCard extends StatelessWidget {
   }
 }
 
+/// When a total score could be calculated, jump straight to the guideline
+/// for that severity; otherwise fall back to the severity picker.
+Widget _destinationFor(int? total) {
+  if (total == null) return const NursingGuidelineScreen();
+  switch (gcsSeverityOf(total)) {
+    case GcsSeverity.mild:
+      return const MildHeadInjuryScreen();
+    case GcsSeverity.moderate:
+      return const ModerateHeadInjuryScreen();
+    case GcsSeverity.severe:
+      return const SevereHeadInjuryScreen();
+  }
+}
+
 class _NursingGuidelineButton extends StatelessWidget {
-  const _NursingGuidelineButton();
+  final int? total;
+
+  const _NursingGuidelineButton({required this.total});
 
   @override
   Widget build(BuildContext context) {
@@ -181,7 +198,7 @@ class _NursingGuidelineButton extends StatelessWidget {
         clipBehavior: Clip.antiAlias,
         child: InkWell(
           onTap: () => Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => const NursingGuidelineScreen()),
+            MaterialPageRoute(builder: (_) => _destinationFor(total)),
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/feature_item.dart';
 import '../services/usage_log_service.dart';
 import '../theme/app_theme.dart';
+import 'app_background.dart';
 
 /// Shared list layout used by the Assess, Monitor, and Knowledge tabs.
 class FeatureListScreen extends StatelessWidget {
@@ -12,12 +13,9 @@ class FeatureListScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: Text(title),
-        automaticallyImplyLeading: false,
-      ),
+    return BackgroundScaffold(
+      title: title,
+      automaticallyImplyLeading: false,
       body: ListView.separated(
         padding: const EdgeInsets.all(16),
         itemCount: items.length,

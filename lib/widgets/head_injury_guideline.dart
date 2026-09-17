@@ -516,13 +516,13 @@ class GuidelineFooterNote extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.info_outline_rounded, size: 14, color: AppColors.textMuted),
+          const Icon(Icons.info_outline_rounded, size: 14, color: AppColors.textOnBackground),
           const SizedBox(width: 6),
           Flexible(
             child: Text(
               text,
               textAlign: TextAlign.center,
-              style: const TextStyle(fontSize: 11.5, color: AppColors.textMuted),
+              style: const TextStyle(fontSize: 11.5, color: AppColors.textOnBackground),
             ),
           ),
         ],

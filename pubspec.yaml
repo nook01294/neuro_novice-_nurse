@@ -67,6 +67,13 @@ flutter:
     - assets/icons/
     - assets/images/background_1.jpg
     - assets/images/baclk_ground_login_new.png
+    - assets/images/back_ground_default.png
+    - assets/images/back_ground_default_1.png
+    - assets/images/back_ground_default_2.png
+    - assets/images/back_ground_default_3.png
+    - assets/images/S__5300254.jpg
+    - assets/images/S__5300252.jpg
+    - assets/images/S__1654795.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

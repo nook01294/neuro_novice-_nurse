@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
+import 'app_background.dart';
 
 /// Shared scaffold for feature screens that are not yet implemented.
 /// Each real feature (GCS, Motor Power, ...) will later replace its
@@ -18,8 +19,8 @@ class PlaceholderDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Text(title)),
+    return BackgroundScaffold(
+      title: title,
       body: Center(
         child: Padding(
           padding: const EdgeInsets.all(32),
@@ -33,14 +34,14 @@ class PlaceholderDetailScreen extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.bold,
-                  color: AppColors.textDark,
+                  color: AppColors.textOnBackground,
                 ),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 12),
               Text(
                 description,
-                style: const TextStyle(fontSize: 15, color: AppColors.textMuted),
+                style: const TextStyle(fontSize: 15, color: AppColors.textOnBackground),
                 textAlign: TextAlign.center,
               ),
               const SizedBox(height: 32),

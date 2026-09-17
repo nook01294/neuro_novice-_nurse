@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_background.dart';
 import '../widgets/head_injury_guideline.dart';
 
 /// Nursing care guideline for Moderate Head Injury (GCS 9–12): physician
@@ -10,9 +11,8 @@ class ModerateHeadInjuryScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(title: const Text('Moderate Head Injury')),
+    return BackgroundScaffold(
+      title: 'Moderate Head Injury',
       body: ListView(
         padding: EdgeInsets.zero,
         children: [
@@ -26,7 +26,7 @@ class ModerateHeadInjuryScreen extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w600,
-                    color: AppColors.primaryDark,
+                    color: AppColors.textOnBackground,
                   ),
                 ),
                 SizedBox(height: 12),

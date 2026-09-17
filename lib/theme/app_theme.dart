@@ -13,7 +13,11 @@ class AppColors {
   static const Color background = Colors.white;
   static const Color cardBackground = Colors.white;
   static const Color textDark = Color(0xFF1F3D33);
-  static const Color textMuted = Color(0xFF7C9488);
+  static const Color textMuted = Color(0xFF3B4E45);
+
+  /// Text placed directly on the page background image (outside any white
+  /// card) needs a light color for contrast since the image is dark green.
+  static const Color textOnBackground = Color(0xFFF5F9F7);
 
   static const Color fieldFill = Color(0xFFF2F8F5);
   static const Color fieldBorder = Color(0xFFE0EAE4);

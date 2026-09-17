@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
+import '../widgets/app_background.dart';
 import '../widgets/placeholder_detail_screen.dart';
 import 'mild_head_injury_screen.dart';
 import 'moderate_head_injury_screen.dart';
@@ -18,9 +19,8 @@ class NursingGuidelineScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(title: const Text('แนวทางการพยาบาล')),
+    return BackgroundScaffold(
+      title: 'แนวทางการพยาบาล',
       body: ListView(
         padding: const EdgeInsets.fromLTRB(16, 12, 16, 20),
         children: const [
@@ -523,7 +523,7 @@ class _FooterNote extends StatelessWidget {
       child: Text(
         'ใช้เพื่อสนับสนุนการประเมิน ไม่ใช่แทนวิจารณญาณทางคลินิก',
         textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 11.5, color: AppColors.textMuted),
+        style: TextStyle(fontSize: 11.5, color: AppColors.textOnBackground),
       ),
     );
   }

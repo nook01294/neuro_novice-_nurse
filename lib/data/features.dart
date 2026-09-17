@@ -1,6 +1,9 @@
 import '../models/feature_item.dart';
 import '../screens/gcs_assess_screen.dart';
+import '../screens/icp_warning_screen.dart';
+import '../screens/motor_power_screen.dart';
 import '../screens/nursing_guideline_screen.dart';
+import '../screens/pupil_screen.dart';
 import '../screens/quiz_test_screen.dart';
 import '../widgets/icons/gcs_png_icon.dart';
 import '../widgets/icons/guidelines_png_icon.dart';
@@ -8,10 +11,9 @@ import '../widgets/icons/icp_warning_png_icon.dart';
 import '../widgets/icons/motor_power_png_icon.dart';
 import '../widgets/icons/quiz_test_png_icon.dart';
 import '../widgets/icons/pupil_png_icon.dart';
-import '../widgets/placeholder_detail_screen.dart';
 
-/// Single source of truth for the app's 6 main features.
-/// Reused by the Home grid, the Assess tab, and the Monitor tab.
+/// Single source of truth for the app's main features, reused by the Home
+/// grid and the Knowledge tab.
 class Features {
   Features._();
 
@@ -24,31 +26,19 @@ class Features {
   static final motorPower = FeatureItem(
     title: 'Motor Power',
     iconBuilder: (size) => MotorPowerPngIcon(size: size),
-    pageBuilder: (_) => PlaceholderDetailScreen(
-      title: 'Motor Power',
-      icon: const MotorPowerPngIcon(size: 96),
-      description: 'เครื่องมือประเมินกำลังกล้ามเนื้อของผู้ป่วย',
-    ),
+    pageBuilder: (_) => const MotorPowerScreen(),
   );
 
   static final pupil = FeatureItem(
     title: 'ประเมินรูม่านตา',
     iconBuilder: (size) => PupilPngIcon(size: size),
-    pageBuilder: (_) => PlaceholderDetailScreen(
-      title: 'ประเมินรูม่านตา',
-      icon: const PupilPngIcon(size: 96),
-      description: 'เครื่องมือตรวจขนาดและการตอบสนองต่อแสงของรูม่านตา\n(Pupillary Light Reflex)',
-    ),
+    pageBuilder: (_) => const PupilScreen(),
   );
 
   static final icpWarning = FeatureItem(
     title: 'ICP Warning',
     iconBuilder: (size) => IcpWarningPngIcon(size: size),
-    pageBuilder: (_) => PlaceholderDetailScreen(
-      title: 'ICP Warning',
-      icon: const IcpWarningPngIcon(size: 96),
-      description: 'ระบบเฝ้าระวังและเตือนภัยภาวะความดันในกะโหลกศีรษะสูง\n(Increased Intracranial Pressure)',
-    ),
+    pageBuilder: (_) => const IcpWarningScreen(),
   );
 
   static final quizTest = FeatureItem(
@@ -72,7 +62,5 @@ class Features {
     quizTest,
   ];
 
-  static final List<FeatureItem> assessment = [gcs, motorPower, pupil];
-  static final List<FeatureItem> monitoring = [icpWarning, quizTest];
   static final List<FeatureItem> knowledge = [guidelines];
 }

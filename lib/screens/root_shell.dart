@@ -2,12 +2,11 @@ import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import 'assess_screen.dart';
 import 'home_screen.dart';
-import 'knowledge_screen.dart';
 import 'monitor_screen.dart';
 import 'settings_screen.dart';
 
-/// Bottom-navigation shell hosting the 5 main sections of the app:
-/// หน้าหลัก (Home), ประเมิน (Assess), ติดตาม (Monitor), ความรู้ (Knowledge),
+/// Bottom-navigation shell hosting the 4 main sections of the app:
+/// หน้าหลัก (Home), ขั้นตอนประเมิน GCS (Assess), ติดตาม (Monitor),
 /// ตั้งค่า (Settings).
 class RootShell extends StatefulWidget {
   const RootShell({super.key});
@@ -23,15 +22,18 @@ class _RootShellState extends State<RootShell> {
     HomeScreen(),
     AssessScreen(),
     MonitorScreen(),
-    KnowledgeScreen(),
     SettingsScreen(),
   ];
 
-  static const _labels = ['หน้าหลัก', 'ประเมิน', 'ติดตาม', 'ความรู้', 'ตั้งค่า'];
+  static const _labels = [
+    'หน้าหลัก',
+    'ขั้นตอนการประเมิน',
+    'Nursing Care',
+    'ตั้งค่า',
+  ];
   static const _icons = [
     Icons.home_rounded,
     Icons.assignment_outlined,
-    Icons.show_chart_rounded,
     Icons.menu_book_outlined,
     Icons.settings_outlined,
   ];
@@ -55,9 +57,9 @@ class _RootShellState extends State<RootShell> {
           ),
           boxShadow: [
             BoxShadow(
-              color: AppColors.primaryDark.withValues(alpha: 0.14),
-              blurRadius: 24,
-              offset: const Offset(0, -8),
+              color: AppColors.primaryDark.withValues(alpha: 0.10),
+              blurRadius: 12,
+              offset: const Offset(0, -2),
             ),
           ],
         ),
@@ -102,20 +104,7 @@ class _NavItem extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // Pill-shaped indicator flush with the top edge of the bar for the selected tab.
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 150),
-            height: 5,
-            width: selected ? 50 : 0,
-            decoration: const BoxDecoration(
-              color: AppColors.primary,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(3),
-                bottomRight: Radius.circular(3),
-              ),
-            ),
-          ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 15),
           Icon(icon, color: color, size: 28),
           const SizedBox(height: 4),
           Text(
