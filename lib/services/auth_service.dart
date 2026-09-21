@@ -51,6 +51,41 @@ class AuthService {
 
   Future<void> signOut() => _auth.signOut();
 
+  /// Re-authenticates with the account's own password. Firebase refuses
+  /// destructive operations such as [deleteAccount] unless the sign-in is
+  /// recent, and a password prompt is also the confirmation step the user
+  /// deserves before an irreversible delete.
+  Future<void> reauthenticate(String password) async {
+    final user = _auth.currentUser;
+    final email = user?.email;
+    if (user == null || email == null) {
+      throw const AuthFailure('ไม่พบบัญชีผู้ใช้ กรุณาเข้าสู่ระบบใหม่');
+    }
+    try {
+      await user.reauthenticateWithCredential(
+        EmailAuthProvider.credential(email: email, password: password),
+      );
+    } on FirebaseAuthException catch (e) {
+      throw AuthFailure(_messageFor(e.code));
+    }
+  }
+
+  /// Permanently deletes the signed-in account. Delete the user's Firestore
+  /// documents *before* calling this: once the account is gone `request.auth`
+  /// is null and the security rules reject every further write, which would
+  /// strand the data with no owner able to remove it.
+  Future<void> deleteAccount() async {
+    final user = _auth.currentUser;
+    if (user == null) {
+      throw const AuthFailure('ไม่พบบัญชีผู้ใช้ กรุณาเข้าสู่ระบบใหม่');
+    }
+    try {
+      await user.delete();
+    } on FirebaseAuthException catch (e) {
+      throw AuthFailure(_messageFor(e.code));
+    }
+  }
+
   String _messageFor(String code) {
     switch (code) {
       case 'invalid-email':
@@ -68,6 +103,8 @@ class AuthService {
         return 'รหัสผ่านไม่ปลอดภัยพอ กรุณาตั้งรหัสผ่านอย่างน้อย 6 ตัวอักษร';
       case 'network-request-failed':
         return 'เชื่อมต่ออินเทอร์เน็ตไม่ได้ กรุณาลองใหม่อีกครั้ง';
+      case 'requires-recent-login':
+        return 'เพื่อความปลอดภัย กรุณาออกจากระบบแล้วเข้าสู่ระบบใหม่ก่อนลบบัญชี';
       case 'too-many-requests':
         return 'มีการพยายามเข้าสู่ระบบบ่อยเกินไป กรุณาลองใหม่ภายหลัง';
       default:

@@ -94,4 +94,36 @@ class UsageLogService {
       // Quiz result logging is best-effort; ignore failures.
     }
   }
+
+  /// Removes every document this app stores for [uid]: both usage
+  /// subcollections and the `users/{uid}` document itself.
+  ///
+  /// Unlike the logging methods above this one deliberately does not swallow
+  /// failures — a silent failure here would delete the account while leaving
+  /// its data behind, with nobody left who is allowed to remove it.
+  Future<void> deleteUserData(String uid) async {
+    final userRef = _db.collection('users').doc(uid);
+
+    for (final subcollection in const ['usage_logs', 'quiz_results']) {
+      await _deleteAll(userRef.collection(subcollection));
+    }
+
+    await userRef.delete();
+  }
+
+  /// Firestore has no recursive delete from the client, so page through the
+  /// collection and batch the deletes. 300 keeps each batch under the 500-op
+  /// limit with room to spare.
+  Future<void> _deleteAll(CollectionReference<Map<String, dynamic>> ref) async {
+    while (true) {
+      final snapshot = await ref.limit(300).get();
+      if (snapshot.docs.isEmpty) return;
+
+      final batch = _db.batch();
+      for (final doc in snapshot.docs) {
+        batch.delete(doc.reference);
+      }
+      await batch.commit();
+    }
+  }
 }
