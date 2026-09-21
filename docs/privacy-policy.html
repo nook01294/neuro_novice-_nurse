@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>นโยบายความเป็นส่วนตัว — NeuroNurse</title>
+<style>
+  :root {
+    --bg: #ffffff;
+    --fg: #1c1c1e;
+    --muted: #6b6b70;
+    --rule: #e3e3e6;
+    --accent: #2f6f8f;
+    --card: #f6f7f8;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #16181a; --fg: #e8e8ea; --muted: #9a9aa0;
+      --rule: #2c2f33; --accent: #7fb4cd; --card: #1f2225;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #16181a; --fg: #e8e8ea; --muted: #9a9aa0;
+    --rule: #2c2f33; --accent: #7fb4cd; --card: #1f2225;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans Thai", "Helvetica Neue", sans-serif;
+    line-height: 1.75;
+    font-size: 17px;
+  }
+  main { max-width: 46rem; margin: 0 auto; padding: 3rem 16px 5rem; }
+  h1 { font-size: 1.9rem; line-height: 1.3; margin: 0 0 .4rem; }
+  h2 { font-size: 1.25rem; margin: 2.6rem 0 .6rem; padding-top: 1.4rem; border-top: 1px solid var(--rule); }
+  h3 { font-size: 1rem; margin: 1.6rem 0 .4rem; color: var(--accent); }
+  .sub { color: var(--muted); margin: 0 0 2rem; font-size: .95rem; }
+  table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: .95rem; }
+  th, td { text-align: left; padding: .6rem .7rem; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  th { font-weight: 600; background: var(--card); }
+  code { background: var(--card); padding: .1rem .35rem; border-radius: 4px; font-size: .88em; }
+  ul { padding-left: 1.3rem; }
+  li { margin: .35rem 0; }
+  a { color: var(--accent); }
+  .note { background: var(--card); border-left: 3px solid var(--accent); padding: .9rem 1.1rem; margin: 1.4rem 0; border-radius: 0 6px 6px 0; }
+  .en { border-top: 2px solid var(--rule); margin-top: 4rem; padding-top: 2rem; }
+  footer { margin-top: 3rem; padding-top: 1.2rem; border-top: 1px solid var(--rule); color: var(--muted); font-size: .88rem; }
+</style>
+</head>
+<body>
+<main>
+
+<h1>นโยบายความเป็นส่วนตัว</h1>
+<p class="sub">แอปพลิเคชัน NeuroNurse · มีผลบังคับใช้วันที่ 22 กันยายน 2569</p>
+
+<p>NeuroNurse เป็นแอปสื่อการเรียนรู้สำหรับพยาบาลและนักศึกษาพยาบาล ในหัวข้อการประเมินระบบประสาท เอกสารฉบับนี้อธิบายว่าแอปเก็บข้อมูลอะไร เก็บไปทำอะไร และคุณจัดการข้อมูลของตัวเองได้อย่างไร</p>
+
+<div class="note">
+  <strong>NeuroNurse ไม่ใช่เครื่องมือแพทย์</strong> เนื้อหาทั้งหมดมีไว้เพื่อการศึกษาและทบทวนความรู้ของบุคลากรทางการแพทย์เท่านั้น ไม่ใช้เพื่อวินิจฉัย รักษา หรือตัดสินใจทางคลินิกกับผู้ป่วยจริง แอปไม่รับและไม่จัดเก็บข้อมูลผู้ป่วยใดๆ ทั้งสิ้น
+</div>
+
+<h2>1. ข้อมูลที่เราเก็บ</h2>
+
+<table>
+  <thead>
+    <tr><th>ข้อมูล</th><th>เก็บเมื่อใด</th><th>ใช้เพื่ออะไร</th></tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>ที่อยู่อีเมล</strong></td>
+      <td>เมื่อคุณสมัครสมาชิกหรือเข้าสู่ระบบ</td>
+      <td>ใช้เป็นชื่อบัญชีสำหรับเข้าสู่ระบบ และใช้ส่งลิงก์ตั้งรหัสผ่านใหม่เมื่อคุณร้องขอ</td>
+    </tr>
+    <tr>
+      <td><strong>รหัสผู้ใช้ (User ID)</strong></td>
+      <td>สร้างอัตโนมัติเมื่อสมัครสมาชิก</td>
+      <td>ใช้เป็นกุญแจอ้างอิงข้อมูลของคุณ เพื่อให้คุณเห็นเฉพาะข้อมูลของตัวเอง</td>
+    </tr>
+    <tr>
+      <td><strong>ประวัติการใช้งาน</strong><br><span style="color:var(--muted);font-size:.9em">ชื่อหัวข้อที่เปิดดู และเวลาที่เปิด</span></td>
+      <td>เมื่อคุณเปิดหัวข้อเนื้อหาในแอป</td>
+      <td>ใช้แสดงว่าคุณทบทวนหัวข้อใดไปแล้วบ้าง</td>
+    </tr>
+    <tr>
+      <td><strong>ผลการทำแบบทดสอบ</strong><br><span style="color:var(--muted);font-size:.9em">ชุดข้อสอบ คะแนนที่ได้ คะแนนเต็ม และเวลา</span></td>
+      <td>เมื่อคุณทำแบบทดสอบจบหนึ่งชุด</td>
+      <td>ใช้แสดงผลการเรียนรู้และความก้าวหน้าของคุณ</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>รหัสผ่านของคุณ</h3>
+<p>รหัสผ่านถูกจัดการโดยบริการ Firebase Authentication ของ Google ในรูปแบบที่เข้ารหัสทางเดียว <strong>ผู้พัฒนาไม่สามารถมองเห็นหรือกู้คืนรหัสผ่านของคุณได้</strong></p>
+
+<h3>ข้อมูลที่เรา<em>ไม่</em>เก็บ</h3>
+<ul>
+  <li>ชื่อ-นามสกุล เบอร์โทรศัพท์ ที่อยู่ เลขบัตรประชาชน</li>
+  <li>ตำแหน่งที่ตั้ง รายชื่อผู้ติดต่อ รูปภาพ ไมโครโฟน กล้อง</li>
+  <li>ข้อมูลสุขภาพของคุณหรือของผู้ป่วย</li>
+  <li>ข้อมูลการชำระเงิน (แอปไม่มีการซื้อขายใดๆ)</li>
+</ul>
+
+<h2>2. เราไม่ติดตามคุณและไม่มีโฆษณา</h2>
+<ul>
+  <li>แอปไม่มีโฆษณา และไม่มี SDK โฆษณาใดๆ</li>
+  <li>แอปไม่ติดตามพฤติกรรมของคุณข้ามแอปหรือข้ามเว็บไซต์อื่น</li>
+  <li>แอปไม่ติดตั้งเครื่องมือวิเคราะห์พฤติกรรมผู้ใช้ของบุคคลที่สาม</li>
+  <li><strong>เราไม่ขาย ไม่ให้เช่า และไม่แลกเปลี่ยนข้อมูลของคุณกับผู้ใด</strong></li>
+</ul>
+
+<h2>3. ข้อมูลถูกเก็บไว้ที่ไหน</h2>
+<p>ข้อมูลทั้งหมดถูกเก็บบนบริการ <strong>Google Firebase</strong> (Firebase Authentication และ Cloud Firestore) ซึ่งทำหน้าที่เป็นผู้ประมวลผลข้อมูลแทนเรา การรับส่งข้อมูลระหว่างแอปกับเซิร์ฟเวอร์เข้ารหัสด้วย HTTPS/TLS ตลอดเส้นทาง</p>
+<p>ดูนโยบายความเป็นส่วนตัวของ Google ได้ที่ <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">firebase.google.com/support/privacy</a></p>
+
+<h2>4. เก็บไว้นานแค่ไหน</h2>
+<p>ข้อมูลของคุณจะถูกเก็บไว้ตราบเท่าที่บัญชีของคุณยังใช้งานอยู่ เมื่อคุณขอลบบัญชี ข้อมูลทั้งหมดที่ผูกกับบัญชีนั้น — ทั้งอีเมล ประวัติการใช้งาน และผลการทำแบบทดสอบ — จะถูกลบออกจากระบบภายใน <strong>30 วัน</strong></p>
+
+<h2>5. สิทธิของคุณ</h2>
+<p>คุณมีสิทธิตามพระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 (PDPA) ดังนี้</p>
+<ul>
+  <li><strong>ขอดูข้อมูล</strong> — ขอสำเนาข้อมูลทั้งหมดที่เราเก็บเกี่ยวกับคุณ</li>
+  <li><strong>ขอแก้ไข</strong> — ขอให้แก้ไขข้อมูลที่ไม่ถูกต้อง</li>
+  <li><strong>ขอลบ</strong> — ขอลบบัญชีและข้อมูลทั้งหมดของคุณ</li>
+  <li><strong>ขอถอนความยินยอม</strong> — หยุดใช้งานและขอลบข้อมูลได้ทุกเมื่อ</li>
+</ul>
+<p>ส่งคำขอมาที่อีเมลด้านล่าง เราจะดำเนินการภายใน 30 วัน</p>
+
+<h2>6. ผู้เยาว์</h2>
+<p>แอปนี้ออกแบบสำหรับบุคลากรทางการแพทย์และนักศึกษาพยาบาล ไม่ได้มุ่งเป้าไปที่เด็กอายุต่ำกว่า 13 ปี และเราไม่ได้ตั้งใจเก็บข้อมูลจากเด็กอายุต่ำกว่า 13 ปี</p>
+
+<h2>7. การเปลี่ยนแปลงนโยบาย</h2>
+<p>หากมีการแก้ไขนโยบายฉบับนี้ เราจะอัปเดตวันที่มีผลบังคับใช้ด้านบนสุดของหน้า และเผยแพร่ฉบับใหม่ที่ URL เดิม</p>
+
+<h2>8. ติดต่อเรา</h2>
+<p>มีคำถามเกี่ยวกับข้อมูลส่วนบุคคลของคุณ หรือต้องการใช้สิทธิข้างต้น ติดต่อ:</p>
+<p><strong>Nopparat Siriban</strong><br>
+อีเมล: <a href="mailto:nook01294@hotmail.com">nook01294@hotmail.com</a></p>
+
+
+<div class="en">
+
+<h1>Privacy Policy</h1>
+<p class="sub">NeuroNurse app · Effective 22 September 2026</p>
+
+<p>NeuroNurse is an educational app for nurses and nursing students covering neurological assessment. This policy explains what the app collects, why, and how you can control your data.</p>
+
+<div class="note">
+  <strong>NeuroNurse is not a medical device.</strong> All content is for the education and revision of healthcare professionals only. It is not intended to diagnose, treat, or inform clinical decisions about real patients. The app neither requests nor stores any patient data.
+</div>
+
+<h2>1. Data we collect</h2>
+<table>
+  <thead>
+    <tr><th>Data</th><th>When</th><th>Why</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Email address</strong></td><td>On sign-up and sign-in</td><td>Serves as your account identifier and lets us send password-reset links you request</td></tr>
+    <tr><td><strong>User ID</strong></td><td>Generated at sign-up</td><td>Keys your records so you see only your own data</td></tr>
+    <tr><td><strong>Usage history</strong><br><span style="color:var(--muted);font-size:.9em">topic opened, timestamp</span></td><td>When you open a content topic</td><td>Shows you which topics you have reviewed</td></tr>
+    <tr><td><strong>Quiz results</strong><br><span style="color:var(--muted);font-size:.9em">quiz set, score, total, timestamp</span></td><td>When you finish a quiz set</td><td>Shows your learning progress</td></tr>
+  </tbody>
+</table>
+
+<h3>Your password</h3>
+<p>Passwords are handled by Google Firebase Authentication as one-way hashes. <strong>The developer cannot view or recover your password.</strong></p>
+
+<h3>What we do <em>not</em> collect</h3>
+<ul>
+  <li>Name, phone number, postal address, national ID</li>
+  <li>Location, contacts, photos, microphone, camera</li>
+  <li>Health data about you or any patient</li>
+  <li>Payment information (the app has no purchases)</li>
+</ul>
+
+<h2>2. No tracking, no advertising</h2>
+<ul>
+  <li>The app contains no advertising and no advertising SDKs.</li>
+  <li>The app does not track you across other apps or websites.</li>
+  <li>The app embeds no third-party behavioural analytics.</li>
+  <li><strong>We do not sell, rent, or trade your data to anyone.</strong></li>
+</ul>
+
+<h2>3. Where your data lives</h2>
+<p>All data is stored on <strong>Google Firebase</strong> (Firebase Authentication and Cloud Firestore), acting as our data processor. Traffic between the app and the server is encrypted end-to-end with HTTPS/TLS. See <a href="https://firebase.google.com/support/privacy" target="_blank" rel="noopener">Google's Firebase privacy policy</a>.</p>
+
+<h2>4. Retention</h2>
+<p>Your data is retained while your account is active. When you request deletion, everything tied to that account — email, usage history, and quiz results — is removed within <strong>30 days</strong>.</p>
+
+<h2>5. Your rights</h2>
+<p>Under Thailand's Personal Data Protection Act B.E. 2562 (PDPA) you may request access to, correction of, or deletion of your personal data, and may withdraw consent at any time. Email the address below; we respond within 30 days.</p>
+
+<h2>6. Children</h2>
+<p>This app is built for healthcare professionals and nursing students. It is not directed at children under 13, and we do not knowingly collect data from them.</p>
+
+<h2>7. Changes</h2>
+<p>If this policy changes, we will update the effective date above and publish the revision at this same URL.</p>
+
+<h2>8. Contact</h2>
+<p><strong>Nopparat Siriban</strong><br>
+Email: <a href="mailto:nook01294@hotmail.com">nook01294@hotmail.com</a></p>
+
+</div>
+
+<footer>
+  NeuroNurse · นโยบายความเป็นส่วนตัว / Privacy Policy · ปรับปรุงล่าสุด 22 กันยายน 2569
+</footer>
+
+</main>
+</body>
+</html>
