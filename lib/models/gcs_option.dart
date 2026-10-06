@@ -81,7 +81,7 @@ class GcsData {
         value: null,
         label: 'ประเมินไม่ได้',
         labelEn: 'Not testable',
-        note: 'On ETT, Tracheostomy, บาดเจ็บรุนแรงบริเวณปาก',
+        note: 'On ETT, Tracheostomy, บาดเจ็บรุนแรงบริเวณปาก, Aphasia',
       ),
     ],
   );

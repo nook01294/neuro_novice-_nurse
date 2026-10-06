@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_background.dart';
+import '../widgets/intro_panel.dart';
 
 /// "Nursing Care" tab — the 6-step nursing-care guideline for preventing
 /// and reducing increased intracranial pressure.
@@ -113,14 +114,7 @@ class _IntroText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text(
-      'แนวทางการปฏิบัติการพยาบาลเพื่อป้องกันและลดความดันในกะโหลกศีรษะสูง',
-      style: TextStyle(
-        fontSize: 14.5,
-        height: 1.6,
-        color: AppColors.textOnBackground,
-      ),
-    );
+    return const IntroPanel(text: 'แนวทางการปฏิบัติการพยาบาลเพื่อป้องกันและลดความดันในกะโหลกศีรษะสูง');
   }
 }
 

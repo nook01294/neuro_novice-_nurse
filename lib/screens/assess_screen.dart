@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_background.dart';
+import '../widgets/intro_panel.dart';
 
 /// "ขั้นตอนการประเมิน" tab — walks through the 4-step procedure (Check,
 /// Observe, Stimulate, Score) nurses follow when performing a Glasgow Coma
@@ -66,10 +67,7 @@ class _IntroText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text(
-      'การประเมินระดับความรู้สึกตัวด้วย GCS ประกอบด้วย 4 ขั้นตอนสำคัญ',
-      style: TextStyle(fontSize: 14.5, height: 1.6, color: AppColors.textOnBackground),
-    );
+    return const IntroPanel(text: 'การประเมินระดับความรู้สึกตัวด้วย GCS ประกอบด้วย 4 ขั้นตอนสำคัญ');
   }
 }
 
@@ -121,12 +119,14 @@ class _StepCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 12),
-              Text(
-                title,
-                style: const TextStyle(
-                  fontSize: 21,
-                  fontWeight: FontWeight.bold,
-                  color: AppColors.textDark,
+              Flexible(
+                child: Text(
+                  title,
+                  style: const TextStyle(
+                    fontSize: 21,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textDark,
+                  ),
                 ),
               ),
             ],

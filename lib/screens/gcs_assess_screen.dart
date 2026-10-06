@@ -52,29 +52,34 @@ class _GcsAssessScreenState extends State<GcsAssessScreen> {
           icon: const Icon(Icons.refresh),
         ),
       ],
-      body: ListView(
-        padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+      body: Column(
         children: [
-          for (final category in GcsData.categories) ...[
-            _GcsCategoryCard(
-              category: category,
-              selected: _selected[category.code],
-              onSelect: (option) => _select(category.code, option),
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+              children: [
+                for (final category in GcsData.categories) ...[
+                  _GcsCategoryCard(
+                    category: category,
+                    selected: _selected[category.code],
+                    onSelect: (option) => _select(category.code, option),
+                  ),
+                  const SizedBox(height: 12),
+                ],
+                Text(
+                  GcsData.source,
+                  style: const TextStyle(fontSize: 11, color: AppColors.textMuted),
+                ),
+                const SizedBox(height: 12),
+              ],
             ),
-            const SizedBox(height: 12),
-          ],
-          _NursingGuidelineButton(total: _total),
-          const SizedBox(height: 12),
-          Text(
-            GcsData.source,
-            style: const TextStyle(fontSize: 11, color: AppColors.textMuted),
           ),
-          const SizedBox(height: 12),
+          SafeArea(
+            top: false,
+            minimum: const EdgeInsets.fromLTRB(16, 4, 16, 16),
+            child: _GcsResultCard(selected: _selected, total: _total),
+          ),
         ],
-      ),
-      bottomNavigationBar: SafeArea(
-        minimum: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-        child: _GcsResultCard(selected: _selected, total: _total),
       ),
     );
   }
@@ -178,6 +183,15 @@ Widget _destinationFor(int? total) {
   }
 }
 
+Color _severityColor(GcsSeverity severity) => switch (severity) {
+      GcsSeverity.mild => AppColors.primaryDark,
+      GcsSeverity.moderate => const Color(0xFFC97A1E),
+      GcsSeverity.severe => AppColors.danger,
+    };
+
+/// Filled button under the result, tinted with the severity colour so it
+/// reads as part of the score; neutral green when there is no total
+/// (Not testable), which routes to the severity picker instead.
 class _NursingGuidelineButton extends StatelessWidget {
   final int? total;
 
@@ -185,40 +199,36 @@ class _NursingGuidelineButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final radius = BorderRadius.circular(AppColors.cardRadius);
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.cardBackground,
-        borderRadius: radius,
-        boxShadow: AppColors.cardShadow,
-      ),
-      child: Material(
-        color: Colors.transparent,
-        borderRadius: radius,
-        clipBehavior: Clip.antiAlias,
-        child: InkWell(
-          onTap: () => Navigator.of(context).push(
-            MaterialPageRoute(builder: (_) => _destinationFor(total)),
-          ),
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-            child: Row(
-              children: [
-                const Icon(Icons.menu_book_rounded, color: AppColors.primaryDark, size: 20),
-                const SizedBox(width: 10),
-                const Expanded(
-                  child: Text(
-                    'แนวทางการพยาบาล',
-                    style: TextStyle(
-                      fontSize: 14.5,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.textDark,
-                    ),
+    final color = total == null ? AppColors.primaryDark : _severityColor(gcsSeverityOf(total!));
+    final radius = BorderRadius.circular(20);
+    return Material(
+      color: color,
+      borderRadius: radius,
+      clipBehavior: Clip.antiAlias,
+      child: InkWell(
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute(builder: (_) => _destinationFor(total)),
+        ),
+        child: const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 13),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.menu_book_rounded, color: Colors.white, size: 20),
+              SizedBox(width: 10),
+              Flexible(
+                child: Text(
+                  'แนวทางการพยาบาล',
+                  style: TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
                   ),
                 ),
-                Icon(Icons.arrow_forward_ios_rounded, size: 14, color: AppColors.textMuted),
-              ],
-            ),
+              ),
+              SizedBox(width: 8),
+              Icon(Icons.arrow_forward_rounded, color: Colors.white, size: 18),
+            ],
           ),
         ),
       ),
@@ -280,7 +290,7 @@ class _GcsOptionTile extends StatelessWidget {
                             text: option.labelEn,
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
-                          TextSpan(text: ' (${option.label})'),
+                          TextSpan(text: '\n(${option.label})'),
                         ],
                       ),
                     ),
@@ -376,11 +386,7 @@ class _GcsResultCard extends StatelessWidget {
       );
     } else {
       final severity = gcsSeverityOf(total!);
-      final color = switch (severity) {
-        GcsSeverity.mild => AppColors.primaryDark,
-        GcsSeverity.moderate => const Color(0xFFC97A1E),
-        GcsSeverity.severe => AppColors.danger,
-      };
+      final color = _severityColor(severity);
       summary = Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -392,7 +398,11 @@ class _GcsResultCard extends StatelessWidget {
               children: [
                 Text(
                   notation,
-                  style: const TextStyle(fontSize: 13, color: AppColors.textMuted),
+                  style: const TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold,
+                    color: AppColors.textDark,
+                  ),
                 ),
                 Text(
                   'รวม $total คะแนน',
@@ -402,40 +412,45 @@ class _GcsResultCard extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 12),
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.12),
-              borderRadius: BorderRadius.circular(20),
-            ),
-            child: Text(
-              severity.label,
-              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: color),
+          Flexible(
+            child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+              decoration: BoxDecoration(
+                color: color.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Text(
+                severity.label,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: color),
+              ),
             ),
           ),
         ],
       );
     }
 
+    // Not testable always routes to the severity picker; otherwise the
+    // button waits until all three are chosen so it can route by score.
+    final showGuideline = hasNt || allAnswered;
+
     return Container(
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 14),
       decoration: BoxDecoration(
+        color: AppColors.cardBackground,
         borderRadius: BorderRadius.circular(AppColors.cardRadius),
         boxShadow: AppColors.cardShadow,
       ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(AppColors.cardRadius),
-        child: Material(
-          color: AppColors.cardBackground,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 16, 16, 14),
-                child: summary,
-              ),
-            ],
-          ),
-        ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          summary,
+          if (showGuideline) ...[
+            const SizedBox(height: 14),
+            _NursingGuidelineButton(total: total),
+          ],
+        ],
       ),
     );
   }

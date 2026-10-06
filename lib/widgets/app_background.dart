@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'circle_back_button.dart';
+
 /// Full-bleed background image shared by every screen except Home: the
 /// title bar is painted directly on top of the image (instead of a solid
 /// AppBar) so the wave artwork shows through behind the title too.
 class BackgroundScaffold extends StatelessWidget {
+  /// Extra enlargement applied to the page content (not the title bar),
+  /// on top of the user's system font-size setting.
+  static const double contentTextScale = 1.1;
+
   final String title;
   final Widget body;
   final bool automaticallyImplyLeading;
@@ -51,7 +57,21 @@ class BackgroundScaffold extends StatelessWidget {
                   showBackButton: showBackButton,
                   actions: actions,
                 ),
-                Expanded(child: body),
+                Expanded(
+                  // Builder: read MediaQuery below the SafeArea, so the
+                  // status-bar inset it already consumed isn't re-applied.
+                  child: Builder(
+                    builder: (context) => MediaQuery(
+                      data: MediaQuery.of(context).copyWith(
+                        textScaler: _ScaledTextScaler(
+                          MediaQuery.textScalerOf(context),
+                          contentTextScale,
+                        ),
+                      ),
+                      child: body,
+                    ),
+                  ),
+                ),
               ],
             ),
           ),
@@ -104,18 +124,9 @@ class _TitleBar extends StatelessWidget {
             ),
           ),
           if (showBackButton)
-            Positioned(
-              left: 16,
-              child: IconButton(
-                icon: const Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: () => Navigator.of(context).pop(),
-                padding: EdgeInsets.zero,
-                constraints: const BoxConstraints(),
-                style: IconButton.styleFrom(
-                  minimumSize: Size.zero,
-                  tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                ),
-              ),
+            const Positioned(
+              left: 12,
+              child: CircleBackButton(),
             ),
           if (actions != null)
             Positioned(
@@ -141,4 +152,27 @@ class _TitleBar extends StatelessWidget {
       ),
     );
   }
+}
+
+/// Multiplies an existing [TextScaler] by a constant factor, so the
+/// content enlargement composes with the system font-size setting.
+class _ScaledTextScaler extends TextScaler {
+  final TextScaler base;
+  final double factor;
+
+  const _ScaledTextScaler(this.base, this.factor);
+
+  @override
+  double scale(double fontSize) => base.scale(fontSize) * factor;
+
+  @override
+  // ignore: deprecated_member_use
+  double get textScaleFactor => base.textScaleFactor * factor;
+
+  @override
+  bool operator ==(Object other) =>
+      other is _ScaledTextScaler && other.base == base && other.factor == factor;
+
+  @override
+  int get hashCode => Object.hash(base, factor);
 }

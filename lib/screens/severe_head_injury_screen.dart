@@ -4,19 +4,23 @@ import '../widgets/app_background.dart';
 import '../widgets/head_injury_guideline.dart';
 
 /// Nursing care guideline for Severe Head Injury (GCS 3–8): immediate
-/// physician/charge-nurse escalation, intensive neuro-observation, key
-/// nursing actions, deterioration warning signs, and Cushing response.
+/// ABCDE resuscitation and airway care, intensive neuro-observation, key
+/// nursing actions, deterioration/IICP warning signs, and Cushing response.
 class SevereHeadInjuryScreen extends StatelessWidget {
   const SevereHeadInjuryScreen({super.key});
 
   static const _warningSigns = [
+    WarningSign(icon: Icons.trending_down_rounded, text: 'GCS ลดลง ≥2 คะแนนจากเดิม'),
+    WarningSign(
+      icon: Icons.fitness_center_rounded,
+      text: 'Motor response (M) ลดลง ≥1 คะแนนจากเดิม หรือกำลังแขนหรือขาลดลง',
+    ),
+    WarningSign(icon: Icons.remove_red_eye_rounded, text: 'รูม่านตาเปลี่ยนแปลง หรือตอบสนองต่อแสงผิดปกติ'),
     WarningSign(icon: Icons.bolt_rounded, text: 'ชัก'),
-    WarningSign(icon: Icons.psychology_alt_rounded, text: 'กระสับกระส่าย'),
-    WarningSign(icon: Icons.trending_down_rounded, text: 'ระดับความรู้สึกตัวลดลง'),
-    WarningSign(icon: Icons.fitness_center_rounded, text: 'แขนหรือขาอ่อนแรงเพิ่มขึ้น'),
-    WarningSign(icon: Icons.equalizer_rounded, text: 'GCS ลดลง >1 คะแนน'),
-    WarningSign(icon: Icons.location_on_rounded, text: 'มีอาการผิดปกติเกิดขึ้นในตำแหน่งใหม่'),
-    WarningSign(icon: Icons.remove_red_eye_rounded, text: 'รูม่านตาไม่เท่ากัน/ตอบสนองต่อแสงผิดปกติ'),
+    WarningSign(
+      icon: Icons.psychology_rounded,
+      text: 'หลีกเลี่ยงกิจกรรมที่อาจเพิ่ม ICP และติดตาม V/S และ neurological signs อย่างใกล้ชิด',
+    ),
   ];
 
   @override
@@ -30,8 +34,8 @@ class SevereHeadInjuryScreen extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(16, 14, 16, 20),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                const Text(
+              children: const [
+                Text(
                   'GCS 3–8 | การพยาบาลระดับรุนแรง',
                   style: TextStyle(
                     fontSize: 14,
@@ -39,36 +43,44 @@ class SevereHeadInjuryScreen extends StatelessWidget {
                     color: AppColors.textOnBackground,
                   ),
                 ),
-                const SizedBox(height: 12),
-                const _MonitoringCard(),
-                const SizedBox(height: 12),
-                const ChecklistCard(
+                SizedBox(height: 12),
+                _ImmediateCareCard(),
+                SizedBox(height: 12),
+                ChecklistCard(
                   headingIcon: Icons.local_hospital_rounded,
                   title: 'การพยาบาลสำคัญ',
                   items: [
                     ChecklistItem(
                       icon: Icons.bed_rounded,
-                      text: 'จัดท่านอนศีรษะสูง 30 องศา เมื่อไม่มีข้อห้าม',
+                      text: 'จัดศีรษะสูงประมาณ 30° และศีรษะ-คอให้อยู่แนวตรง เมื่อไม่มีข้อห้าม',
                     ),
                     ChecklistItem(
                       icon: Icons.water_drop_rounded,
-                      text: 'ดูแลและปรับสารน้ำทางหลอดเลือดดำ (IV fluid) ตามแผนการรักษา '
-                          'และบันทึกสารน้ำเข้า-ออก',
+                      text: 'ให้สารน้ำทางหลอดเลือดดำตามแผนการรักษา '
+                          'และบันทึกสารน้ำเข้า-ออก (I/O)',
                     ),
                     ChecklistItem(
                       icon: Icons.medication_rounded,
-                      text: 'ให้ยาลด ICP และยากันชัก ตามแผนการรักษาของแพทย์',
+                      text: 'ให้ Mannitol หรือ Hypertonic saline เมื่อมีข้อบ่งชี้ตามแผน '
+                          'พร้อมติดตามภาวะแทรกซ้อน',
                     ),
                     ChecklistItem(
                       icon: Icons.shield_rounded,
-                      text: 'ป้องกันการสำลัก ชัก แผลกดทับ และอุณหภูมิที่ผิดปกติ',
+                      text: 'ให้ยากันชักเพื่อป้องกัน early post-traumatic seizure '
+                          'เมื่อมีข้อบ่งชี้หรือความเสี่ยงสูง ตามแผนการรักษา',
                     ),
                   ],
                 ),
-                const SizedBox(height: 12),
-                WarningSignsCard(signs: _warningSigns, trailing: const _CushingSection()),
-                const SizedBox(height: 12),
-                const GuidelineFooterNote(),
+                SizedBox(height: 12),
+                WarningSignsCard(
+                  title: 'เฝ้าระวังภาวะทรุดลงและ IICP',
+                  signs: _warningSigns,
+                  columns: 1,
+                  bannerText: 'พบความผิดปกติให้รายงานแพทย์ทันที',
+                  trailing: _CushingSection(),
+                ),
+                SizedBox(height: 12),
+                GuidelineFooterNote(),
               ],
             ),
           ),
@@ -78,8 +90,8 @@ class SevereHeadInjuryScreen extends StatelessWidget {
   }
 }
 
-class _MonitoringCard extends StatelessWidget {
-  const _MonitoringCard();
+class _ImmediateCareCard extends StatelessWidget {
+  const _ImmediateCareCard();
 
   @override
   Widget build(BuildContext context) {
@@ -90,52 +102,64 @@ class _MonitoringCard extends StatelessWidget {
         children: [
           const GuidelineCardHeading(
             icon: Icons.event_note_rounded,
-            title: 'ประเมินและติดตาม',
+            title: 'ประเมินและช่วยเหลือทันที',
             iconColor: AppColors.primaryDark,
             iconBackground: Color(0xFFDDF3E7),
             titleColor: AppColors.primaryDark,
           ),
           const SizedBox(height: 10),
-          const InlineAlertRow(
-            icon: Icons.record_voice_over_rounded,
-            text: 'ประเมิน ABCDE และแจ้งหัวหน้าเวร/รายงานแพทย์/ทีมที่เกี่ยวข้องทันที',
+          const ChecklistList(
+            items: [
+              ChecklistItem(
+                icon: Icons.notifications_active_rounded,
+                text: 'ช่วยเหลือตามหลัก ABCDE และรายงานแพทย์/ทีมที่เกี่ยวข้องทันที',
+              ),
+              ChecklistItem(
+                icon: Icons.air_rounded,
+                text: 'ดูแลทางเดินหายใจให้โล่ง ป้องกันภาวะพร่องออกซิเจน',
+              ),
+              ChecklistItem(
+                icon: Icons.medical_services_rounded,
+                text: 'เตรียมอุปกรณ์และช่วยใส่ท่อช่วยหายใจเมื่อมีข้อบ่งชี้ '
+                    'โดยเฉพาะ GCS ≤8 หรือปกป้องทางเดินหายใจไม่ได้',
+              ),
+              ChecklistItem(
+                icon: Icons.monitor_heart_rounded,
+                text: 'ติดตามสัญญาณชีพและ SpO₂ อย่างใกล้ชิด',
+              ),
+            ],
           ),
           const SizedBox(height: 10),
-          IntrinsicHeight(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: const [
-                Expanded(
-                  child: InlineTintedRow(
-                    icon: Icons.air_rounded,
-                    text: 'ดูแลทางเดินหายใจและเตรียมช่วยใส่ท่อช่วยหายใจเมื่อมีข้อบ่งชี้',
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF3FBF7),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
+            ),
+            child: const Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'ประเมิน neurological signs: GCS (E, V, M), Pupil, Motor response',
+                  style: TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                    color: AppColors.primaryDark,
                   ),
                 ),
-                SizedBox(width: 10),
-                Expanded(
-                  child: InlineTintedRow(
-                    icon: Icons.monitor_heart_rounded,
-                    text: 'ติดตาม BP • HR • ECG • O₂ saturation อย่างต่อเนื่อง',
-                  ),
+                SizedBox(height: 10),
+                TimelineArrowRow(
+                  boxes: [
+                    CompactTimelineBox(primary: 'ทุก 15–30 นาที', secondary: 'ในระยะวิกฤต'),
+                    CompactTimelineBox(primary: 'ปรับตามอาการ', secondary: 'คำสั่งแพทย์'),
+                    CompactTimelineBox(primary: 'และแนวปฏิบัติ', secondary: 'ของหน่วยงาน'),
+                  ],
                 ),
               ],
             ),
           ),
-          const SizedBox(height: 10),
-          const Text(
-            'V/S • N/S • Pupil • GCS แยก E, V, M • Motor power',
-            style: TextStyle(fontSize: 13.5, color: AppColors.textDark),
-          ),
-          const SizedBox(height: 10),
-          const TimelineArrowRow(
-            boxes: [
-              CompactTimelineBox(primary: 'ทุก 15 นาที', secondary: 'เป็นเวลา 2 ชั่วโมง'),
-              CompactTimelineBox(primary: 'ทุก 30 นาที', secondary: 'เป็นเวลา 2 ชั่วโมง'),
-              CompactTimelineBox(primary: 'ทุก 1 ชั่วโมง', secondary: 'จนกว่าอาการจะคงที่'),
-            ],
-          ),
-          const SizedBox(height: 10),
-          const InfoNoteRow(text: 'หรือปรับตามอาการ คำสั่ง และแนวทางหน่วยงาน'),
         ],
       ),
     );
@@ -153,9 +177,12 @@ class _CushingSection extends StatelessWidget {
   const _CushingSection();
 
   static const _signs = [
-    _CushingSign(icon: Icons.arrow_upward_rounded, text: 'ความดันโลหิตสูงขึ้น โดยเฉพาะ systolic BP'),
-    _CushingSign(icon: Icons.monitor_heart_rounded, text: 'ชีพจรช้าลง (Bradycardia)'),
-    _CushingSign(icon: Icons.air_rounded, text: 'การหายใจผิดปกติ'),
+    _CushingSign(icon: Icons.arrow_upward_rounded, text: 'ความดันโลหิตสูงขึ้น โดยเฉพาะ Systolic BP'),
+    _CushingSign(icon: Icons.show_chart_rounded, text: 'Pulse pressure กว้างขึ้น'),
+    _CushingSign(
+      icon: Icons.monitor_heart_rounded,
+      text: 'ชีพจรช้าลง (Bradycardia) และการหายใจผิดปกติ/ไม่สม่ำเสมอ',
+    ),
   ];
 
   @override
@@ -167,9 +194,20 @@ class _CushingSection extends StatelessWidget {
           children: [
             const Icon(Icons.favorite_rounded, color: AppColors.danger, size: 20),
             const SizedBox(width: 8),
-            Text(
-              'เฝ้าระวัง Cushing response',
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: AppColors.danger),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Cushing response',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w800, color: AppColors.danger),
+                  ),
+                  const Text(
+                    'สัญญาณอันตรายของภาวะ IICP',
+                    style: TextStyle(fontSize: 12, color: AppColors.textMuted),
+                  ),
+                ],
+              ),
             ),
           ],
         ),

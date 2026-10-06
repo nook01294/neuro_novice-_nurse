@@ -64,9 +64,11 @@ class QuizTestScreen extends StatelessWidget {
             children: [
               Icon(Icons.list_alt_rounded, size: 18, color: AppColors.primaryDark),
               SizedBox(width: 8),
-              Text(
-                'เลือกชุดข้อสอบ',
-                style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.textDark),
+              Flexible(
+                child: Text(
+                  'เลือกชุดข้อสอบ',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: AppColors.textDark),
+                ),
               ),
             ],
           ),
@@ -122,9 +124,11 @@ class _Labeled extends StatelessWidget {
           children: [
             Icon(icon, size: 15, color: AppColors.primaryDark),
             const SizedBox(width: 6),
-            Text(
-              label,
-              style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.primaryDark),
+            Flexible(
+              child: Text(
+                label,
+                style: const TextStyle(fontSize: 13, fontWeight: FontWeight.bold, color: AppColors.primaryDark),
+              ),
             ),
           ],
         ),

@@ -3,8 +3,8 @@ import '../theme/app_theme.dart';
 
 /// Shared building blocks for the head-injury-severity nursing guideline
 /// screens (Mild / Moderate / Severe): the rounded-card chrome, the
-/// checklist and warning-signs cards, and the small tinted/info rows used
-/// inside the "ประเมินและติดตาม" card.
+/// checklist and warning-signs cards, and the bullet/info rows used inside
+/// the "ประเมินและติดตาม" card.
 
 /// Shared rounded-card chrome used by every section below the header.
 class GuidelineCard extends StatelessWidget {
@@ -146,113 +146,42 @@ class CompactTimelineBox extends StatelessWidget {
   }
 }
 
-/// Wide, left-aligned timeline box (icon beside stacked text) used when
-/// only a couple of steps need to fill the row.
-class WideTimelineBox extends StatelessWidget {
-  final String primary;
-  final String secondary;
+/// Dotted bullet list, e.g. the assessment points in "ประเมินและติดตาม".
+class BulletList extends StatelessWidget {
+  final List<String> items;
 
-  const WideTimelineBox({super.key, required this.primary, required this.secondary});
+  const BulletList({super.key, required this.items});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF3FBF7),
-        borderRadius: BorderRadius.circular(14),
-      ),
-      child: Row(
-        children: [
-          const Icon(Icons.schedule_rounded, size: 20, color: AppColors.primaryDark),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        for (final item in items)
+          Padding(
+            padding: const EdgeInsets.only(bottom: 6),
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  primary,
-                  style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: AppColors.textDark),
+                const Padding(
+                  padding: EdgeInsets.only(top: 7, left: 4, right: 10),
+                  child: Icon(Icons.circle, size: 6, color: AppColors.textDark),
                 ),
-                Text(
-                  secondary,
-                  style: const TextStyle(fontSize: 11, color: AppColors.textMuted),
+                Expanded(
+                  child: Text(
+                    item,
+                    style: const TextStyle(fontSize: 13.5, height: 1.4, color: AppColors.textDark),
+                  ),
                 ),
               ],
             ),
           ),
-        ],
-      ),
+      ],
     );
   }
 }
 
-/// Pink alert row, e.g. "ประเมิน ABCDE และแจ้งแพทย์/ทีมที่เกี่ยวข้อง".
-class InlineAlertRow extends StatelessWidget {
-  final IconData icon;
-  final String text;
-
-  const InlineAlertRow({super.key, required this.icon, required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
-      decoration: BoxDecoration(
-        color: const Color(0xFFFDECEA),
-        borderRadius: BorderRadius.circular(14),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, size: 19, color: AppColors.danger),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              text,
-              style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w700, color: AppColors.danger),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// Solid light-green pill row used for a single-line note inside a card,
-/// e.g. "เฝ้าระวังทางเดินหายใจและการสำลัก".
-class InlineTintedRow extends StatelessWidget {
-  final IconData icon;
-  final String text;
-
-  const InlineTintedRow({super.key, required this.icon, required this.text});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
-      decoration: BoxDecoration(
-        color: const Color(0xFFDDF3E7),
-        borderRadius: BorderRadius.circular(14),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, size: 19, color: AppColors.primaryDark),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Text(
-              text,
-              style: const TextStyle(fontSize: 13.5, fontWeight: FontWeight.w600, color: AppColors.textDark),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-/// Muted "(i) hint" row, e.g. "หรือปรับตามอาการ คำสั่ง และแนวทางหน่วยงาน".
+/// Muted "(i) hint" row, e.g. "ปรับความถี่ตามอาการ คำสั่งแพทย์ และแนวปฏิบัติของหน่วยงาน".
 class InfoNoteRow extends StatelessWidget {
   final String text;
 
@@ -273,11 +202,22 @@ class InfoNoteRow extends StatelessWidget {
   }
 }
 
+/// A labelled sub-point shown in a tinted box under a checklist item,
+/// e.g. "ชัก: จัดสิ่งแวดล้อมให้ปลอดภัย ...".
+class ChecklistDetail {
+  final IconData icon;
+  final String label;
+  final String text;
+
+  const ChecklistDetail({required this.icon, required this.label, required this.text});
+}
+
 class ChecklistItem {
   final IconData icon;
   final String text;
+  final List<ChecklistDetail> details;
 
-  const ChecklistItem({required this.icon, required this.text});
+  const ChecklistItem({required this.icon, required this.text, this.details = const []});
 }
 
 /// White card with a heading and a divided list of check-marked nursing
@@ -309,46 +249,117 @@ class ChecklistCard extends StatelessWidget {
             titleColor: AppColors.primaryDark,
           ),
           const SizedBox(height: 10),
-          Container(
-            decoration: BoxDecoration(
-              color: const Color(0xFFFAFCFB),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
-            child: Column(
+          ChecklistList(items: items),
+        ],
+      ),
+    );
+  }
+}
+
+/// Divided list of check-marked nursing actions; the body of
+/// [ChecklistCard], also used on its own inside other cards.
+class ChecklistList extends StatelessWidget {
+  final List<ChecklistItem> items;
+
+  const ChecklistList({super.key, required this.items});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFFFAFCFB),
+        borderRadius: BorderRadius.circular(16),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 2),
+      child: Column(
+        children: [
+          for (var i = 0; i < items.length; i++)
+            Column(
               children: [
-                for (var i = 0; i < items.length; i++)
-                  Column(
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 11),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 11),
-                        child: Row(
+                      const Icon(Icons.check_circle_rounded, color: AppColors.primary, size: 20),
+                      const SizedBox(width: 10),
+                      Icon(items[i].icon, color: AppColors.primaryDark, size: 20),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Icon(Icons.check_circle_rounded, color: AppColors.primary, size: 20),
-                            const SizedBox(width: 10),
-                            Icon(items[i].icon, color: AppColors.primaryDark, size: 20),
-                            const SizedBox(width: 12),
-                            Expanded(
-                              child: Text(
-                                items[i].text,
-                                style: const TextStyle(
-                                  fontSize: 13.5,
-                                  height: 1.4,
-                                  color: AppColors.textDark,
-                                ),
+                            Text(
+                              items[i].text,
+                              style: const TextStyle(
+                                fontSize: 13.5,
+                                height: 1.4,
+                                color: AppColors.textDark,
                               ),
                             ),
+                            if (items[i].details.isNotEmpty) ...[
+                              const SizedBox(height: 6),
+                              _ChecklistDetails(details: items[i].details),
+                            ],
                           ],
                         ),
                       ),
-                      if (i != items.length - 1)
-                        Divider(height: 1, thickness: 1, color: Colors.black.withValues(alpha: 0.06)),
                     ],
                   ),
+                ),
+                if (i != items.length - 1)
+                  Divider(height: 1, thickness: 1, color: Colors.black.withValues(alpha: 0.06)),
               ],
             ),
-          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ChecklistDetails extends StatelessWidget {
+  final List<ChecklistDetail> details;
+
+  const _ChecklistDetails({required this.details});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: const Color(0xFFF3FBF7),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+      child: Column(
+        children: [
+          for (var i = 0; i < details.length; i++) ...[
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Icon(details[i].icon, size: 18, color: AppColors.primaryDark),
+                  const SizedBox(width: 8),
+                  Expanded(
+                    child: Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(
+                            text: '${details[i].label}: ',
+                            style: const TextStyle(fontWeight: FontWeight.w700),
+                          ),
+                          TextSpan(text: details[i].text),
+                        ],
+                      ),
+                      style: const TextStyle(fontSize: 12, height: 1.25, color: AppColors.textDark),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            if (i != details.length - 1)
+              Divider(height: 1, thickness: 1, color: Colors.black.withValues(alpha: 0.06)),
+          ],
         ],
       ),
     );
@@ -361,21 +372,6 @@ class WarningSign {
 
   const WarningSign({required this.icon, required this.text});
 }
-
-/// The standard set of neurological deterioration warning signs shared by
-/// every head-injury-severity guideline screen.
-const List<WarningSign> standardWarningSigns = [
-  WarningSign(icon: Icons.bolt_rounded, text: 'ชัก'),
-  WarningSign(icon: Icons.sick_rounded, text: 'อาเจียน ≥2 ครั้ง'),
-  WarningSign(icon: Icons.trending_down_rounded, text: 'GCS ลดลง >1 คะแนน'),
-  WarningSign(icon: Icons.remove_red_eye_rounded, text: 'รูม่านตาไม่เท่ากัน/ตอบสนองต่อแสงผิดปกติ'),
-  WarningSign(icon: Icons.psychology_alt_rounded, text: 'กระสับกระส่ายหรือสับสน'),
-  WarningSign(icon: Icons.healing_rounded, text: 'ปวดศีรษะตำแหน่งใหม่หรือไม่ใช่บริเวณบาดเจ็บ'),
-  WarningSign(icon: Icons.blur_on_rounded, text: 'เวียนศีรษะ ตาพร่ามัว หรือเห็นภาพซ้อน'),
-  WarningSign(icon: Icons.fitness_center_rounded, text: 'แขนหรือขาอ่อนแรงใหม่หรือเพิ่มขึ้น'),
-  WarningSign(icon: Icons.back_hand_rounded, text: 'มีอาการชาใหม่'),
-  WarningSign(icon: Icons.mood_bad_rounded, text: 'พฤติกรรมเปลี่ยนแปลง'),
-];
 
 class _WarningCell extends StatelessWidget {
   final WarningSign sign;
@@ -403,34 +399,39 @@ class _WarningCell extends StatelessWidget {
   }
 }
 
-/// Peach card listing neurological deterioration warning signs in a
-/// two-column grid, ending in a red escalation banner.
+/// Peach card listing neurological deterioration warning signs in a grid
+/// of [columns] columns, optionally followed by [trailing] content, and
+/// ending in a red escalation banner.
 class WarningSignsCard extends StatelessWidget {
+  final String title;
   final List<WarningSign> signs;
+  final int columns;
   final String bannerText;
   final Widget? trailing;
 
   const WarningSignsCard({
     super.key,
-    this.signs = standardWarningSigns,
-    this.bannerText =
-        'พบอย่างน้อย 1 อาการ ให้ประเมินซ้ำและรายงานหัวหน้าเวร เพื่อพิจารณารายงานแพทย์ทันที',
+    this.title = 'เฝ้าระวังและรายงาน',
+    required this.signs,
+    this.columns = 2,
+    this.bannerText = 'พบความผิดปกติให้รายงานแพทย์/ทีมรักษาทันที',
     this.trailing,
   });
 
   @override
   Widget build(BuildContext context) {
+    final divider = Divider(height: 1, thickness: 1, color: Colors.black.withValues(alpha: 0.06));
     return GuidelineCard(
       background: const Color(0xFFFDF3E7),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const GuidelineCardHeading(
+          GuidelineCardHeading(
             icon: Icons.warning_rounded,
-            title: 'เฝ้าระวังและรายงาน',
-            iconColor: Color(0xFFC97A1E),
-            iconBackground: Color(0xFFFBE4C4),
-            titleColor: Color(0xFFC97A1E),
+            title: title,
+            iconColor: const Color(0xFFC97A1E),
+            iconBackground: const Color(0xFFFBE4C4),
+            titleColor: const Color(0xFFC97A1E),
           ),
           const SizedBox(height: 12),
           Container(
@@ -441,28 +442,29 @@ class WarningSignsCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
             child: Column(
               children: [
-                for (var i = 0; i < signs.length; i += 2)
-                  Column(
-                    children: [
-                      IntrinsicHeight(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Expanded(child: _WarningCell(sign: signs[i])),
-                            if (i + 1 < signs.length) ...[
-                              Container(width: 1, color: Colors.black.withValues(alpha: 0.06)),
-                              Expanded(child: _WarningCell(sign: signs[i + 1])),
-                            ],
-                          ],
-                        ),
-                      ),
-                      if (i + 2 < signs.length)
-                        Divider(height: 1, thickness: 1, color: Colors.black.withValues(alpha: 0.06)),
-                    ],
+                for (var i = 0; i < signs.length; i += columns) ...[
+                  IntrinsicHeight(
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        for (var j = i; j < i + columns; j++) ...[
+                          if (j != i) Container(width: 1, color: Colors.black.withValues(alpha: 0.06)),
+                          Expanded(
+                            child: j < signs.length ? _WarningCell(sign: signs[j]) : const SizedBox(),
+                          ),
+                        ],
+                      ],
+                    ),
                   ),
+                  if (i + columns < signs.length) divider,
+                ],
               ],
             ),
           ),
+          if (trailing != null) ...[
+            const SizedBox(height: 10),
+            trailing!,
+          ],
           const SizedBox(height: 10),
           Container(
             width: double.infinity,
@@ -490,10 +492,6 @@ class WarningSignsCard extends StatelessWidget {
               ],
             ),
           ),
-          if (trailing != null) ...[
-            const SizedBox(height: 10),
-            trailing!,
-          ],
         ],
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_background.dart';
+import '../widgets/intro_panel.dart';
 
 /// "Pupil Assessment" reference page — explains how to evaluate pupil
 /// shape, position, equality, size, and light-reflex response
@@ -18,12 +19,8 @@ class PupilScreen extends StatelessWidget {
           _IntroText(),
           SizedBox(height: 20),
           _EyeDiagramCard(),
-          SizedBox(height: 10),
-          _EyeDiagramCaption(),
           SizedBox(height: 16),
           _StepsCard(),
-          SizedBox(height: 12),
-          _TechniqueCard(),
           SizedBox(height: 12),
           _WarningCard(),
         ],
@@ -37,11 +34,13 @@ class _IntroText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text(
-      'การประเมินรูม่านตาและปฏิกิริยาต่อแสง (Pupillary Light Reflex) ใช้ตรวจหาความผิดปกติ '
-      'ทางระบบประสาท โดยประเมินรูปร่าง ตำแหน่ง ความเท่ากัน ขนาด (mm) และปฏิกิริยาต่อแสง '
-      'แยกตาทั้งสองข้าง',
-      style: TextStyle(fontSize: 14.5, height: 1.6, color: AppColors.textOnBackground),
+    return const IntroPanel(
+      text:
+          'การประเมินรูม่านตาเป็นส่วนหนึ่งของการประเมินระบบประสาท โดยประเมินขนาด ความเท่ากัน '
+          'และการตอบสนองต่อแสงของรูม่านตาทั้งสองข้าง การเปลี่ยนแปลงของขนาดหรือการตอบสนองต่อแสง'
+          'จากค่าพื้นฐาน อาจสัมพันธ์กับการเปลี่ยนแปลงของระบบประสาท เช่น ภาวะความดันในกะโหลกศีรษะสูง '
+          'การกดเบียดก้านสมอง หรือการทำงานผิดปกติของเส้นประสาทสมอง โดยเฉพาะ CN II และ CN III '
+          'ซึ่งควรประเมินร่วมกับระดับความรู้สึกตัวและ neurological signs อื่น ๆ',
     );
   }
 }
@@ -73,19 +72,6 @@ class _EyeDiagramCard extends StatelessWidget {
   }
 }
 
-class _EyeDiagramCaption extends StatelessWidget {
-  const _EyeDiagramCaption();
-
-  @override
-  Widget build(BuildContext context) {
-    return const Text(
-      'ประเมินรูปร่าง ตำแหน่ง ความเท่ากัน ขนาด และปฏิกิริยาต่อแสงแยกตาทั้งสองข้าง',
-      textAlign: TextAlign.center,
-      style: TextStyle(fontSize: 13, height: 1.5, color: AppColors.textDark),
-    );
-  }
-}
-
 class _Step {
   final String number;
   final String title;
@@ -100,31 +86,45 @@ class _StepsCard extends StatelessWidget {
   static const _steps = [
     _Step(
       number: '1',
-      title: 'เตรียมผู้ป่วย',
+      title: 'จัดสภาพแวดล้อม',
       description:
-          'ตรวจสอบค่าพื้นฐาน ประวัติโรคหรือการผ่าตัดตา ยาหรือยาหยอดตาที่อาจมีผลต่อรูม่านตา '
-          'และการบาดเจ็บที่ดวงตา',
+          'จัดให้มีแสงสว่างที่เหมาะสมหรือค่อนข้างสลัวหากสามารถทำได้ '
+          'และให้ผู้ป่วยมองตรงไปยังวัตถุที่อยู่ไกล',
     ),
     _Step(
       number: '2',
-      title: 'สังเกตก่อนส่องไฟ',
+      title: 'ประเมินปัจจัยที่อาจมีผลต่อรูม่านตา',
       description:
-          'ประเมินรูปร่าง ตำแหน่ง ความเท่ากัน และวัดขนาดรูม่านตาทั้งสองข้างเป็นมิลลิเมตร',
+          'ซักประวัติความผิดปกติของตา การผ่าตัดตา การบาดเจ็บบริเวณตาหรือเบ้าตา '
+          'รวมถึงยาและยาหยอดตาที่อาจมีผลต่อขนาดหรือการตอบสนองของรูม่านตา '
+          'โดยควรหลีกเลี่ยงการกดบริเวณลูกตาที่สงสัยว่ามีการบาดเจ็บ',
     ),
     _Step(
       number: '3',
-      title: 'Direct light reflex',
-      description: 'ส่องไฟจากหางตาไปทางหัวตาทีละข้าง สังเกตการหดตัวของตาข้างที่ถูกส่อง',
+      title: 'สังเกตก่อนส่องไฟ',
+      description:
+          'ประเมิน รูปร่าง ขนาด และความเท่ากันของรูม่านตาทั้งสองข้างก่อนกระตุ้นด้วยแสง '
+          'และบันทึกขนาดเป็นมิลลิเมตร โดยเปรียบเทียบตาขวาและตาซ้าย',
     ),
     _Step(
       number: '4',
-      title: 'Consensual light reflex',
-      description: 'ขณะส่องไฟตาข้างหนึ่ง สังเกตการหดตัวของรูม่านตาอีกข้าง',
+      title: 'ตรวจ Direct light reflex',
+      description:
+          'ส่องไฟจากบริเวณหางตาไปทางหัวตาทีละข้าง แล้วสังเกตการหดตัวของรูม่านตาข้างที่ได้รับแสง',
     ),
     _Step(
       number: '5',
-      title: 'บันทึกผลแยกข้าง',
-      description: 'เช่น Rt 3 mm, Lt 3 mm, equal, round, briskly reactive to light',
+      title: 'ตรวจ Indirect light reflex',
+      description:
+          'ขณะส่องไฟเข้าตาข้างหนึ่ง ให้สังเกตการหดตัวของรูม่านตาอีกข้างหนึ่ง '
+          'และตรวจเปรียบเทียบทั้งสองข้าง',
+    ),
+    _Step(
+      number: '6',
+      title: 'บันทึกผล',
+      description:
+          'บันทึกขนาดรูม่านตาเป็นมิลลิเมตรแยกตาขวาและซ้าย พร้อมลักษณะการตอบสนองต่อแสง '
+          'เช่น Rt 3 mm, Lt 3 mm, Reactive โดยสามารถอธิบายการตอบสนองได้ดังนี้',
     ),
   ];
 
@@ -148,7 +148,7 @@ class _StepsCard extends StatelessWidget {
               SizedBox(width: 10),
               Expanded(
                 child: Text(
-                  'ขั้นตอนการประเมินรูม่านตา',
+                  'ขั้นตอนการประเมินรูม่านตา (Pupil Assessment)',
                   style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: AppColors.primaryDark),
                 ),
               ),
@@ -160,6 +160,8 @@ class _StepsCard extends StatelessWidget {
             if (step != _steps.last)
               Divider(height: 1, thickness: 1, color: AppColors.primary.withValues(alpha: 0.2)),
           ],
+          const SizedBox(height: 4),
+          const _ReactivityBox(),
         ],
       ),
     );
@@ -194,19 +196,17 @@ class _StepRow extends StatelessWidget {
           ),
           const SizedBox(width: 14),
           Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  step.title,
-                  style: const TextStyle(fontSize: 14.5, fontWeight: FontWeight.w700, color: AppColors.primaryDark),
-                ),
-                const SizedBox(height: 3),
-                Text(
-                  step.description,
-                  style: const TextStyle(fontSize: 13, height: 1.4, color: AppColors.textDark),
-                ),
-              ],
+            child: Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: '${step.title}: ',
+                    style: const TextStyle(fontWeight: FontWeight.w700, color: AppColors.primaryDark),
+                  ),
+                  TextSpan(text: step.description),
+                ],
+              ),
+              style: const TextStyle(fontSize: 13.5, height: 1.45, color: AppColors.textDark),
             ),
           ),
         ],
@@ -215,79 +215,48 @@ class _StepRow extends StatelessWidget {
   }
 }
 
-class _TechniqueCard extends StatelessWidget {
-  const _TechniqueCard();
+/// Yellow box under step 6 defining the light-response terms to record.
+class _ReactivityBox extends StatelessWidget {
+  const _ReactivityBox();
+
+  static const _terms = [
+    ('Reactive/Brisk', 'รูม่านตาหดตัวอย่างรวดเร็วเมื่อได้รับแสง'),
+    ('Sluggish', 'รูม่านตาหดตัวช้าหรือมีการตอบสนองต่อแสงลดลง'),
+    ('Non-reactive/Fixed', 'รูม่านตาไม่หดตัวหรือไม่มีการเปลี่ยนแปลงของขนาดเมื่อได้รับแสง'),
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.all(14),
+      padding: const EdgeInsets.fromLTRB(14, 12, 14, 6),
       decoration: BoxDecoration(
-        color: const Color(0xFFEDF9F3),
-        borderRadius: BorderRadius.circular(AppColors.cardRadius),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.25)),
+        color: const Color(0xFFFFF6D6),
+        borderRadius: BorderRadius.circular(14),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Icon(Icons.lightbulb_rounded, color: Color(0xFFC97A1E), size: 22),
-              const SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      'เทคนิคการตรวจ',
-                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.primaryDark),
+          for (final (term, meaning) in _terms)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 6),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(top: 7, right: 10),
+                    child: Icon(Icons.circle, size: 6, color: AppColors.textDark),
+                  ),
+                  Expanded(
+                    child: Text(
+                      '$term: $meaning',
+                      style: const TextStyle(fontSize: 13.5, height: 1.4, color: AppColors.textDark),
                     ),
-                    SizedBox(height: 6),
-                    Text(
-                      'จัดห้องให้แสงสลัวหากทำได้ ให้ผู้ป่วยมองไกลขณะตรวจ '
-                      'และหลีกเลี่ยงการกดลูกตาที่ได้รับบาดเจ็บ',
-                      style: TextStyle(fontSize: 13, height: 1.5, color: AppColors.textDark),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Row(
-            children: const [
-              Expanded(child: _StatusChip(label: 'Reactive', color: Color(0xFFA3EBC5), textColor: Color(0xFF1E7A4A))),
-              SizedBox(width: 8),
-              Expanded(child: _StatusChip(label: 'Sluggish', color: Color(0xFFFCE49B), textColor: Color(0xFF8A6A1E))),
-              SizedBox(width: 8),
-              Expanded(child: _StatusChip(label: 'Non-reactive', color: Color(0xFFF6B8B0), textColor: Color(0xFF8A3A33))),
-            ],
-          ),
+            ),
         ],
-      ),
-    );
-  }
-}
-
-class _StatusChip extends StatelessWidget {
-  final String label;
-  final Color color;
-  final Color textColor;
-
-  const _StatusChip({required this.label, required this.color, required this.textColor});
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      alignment: Alignment.center,
-      decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(20)),
-      child: Text(
-        label,
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 12.5, fontWeight: FontWeight.w700, color: textColor),
       ),
     );
   }
@@ -321,9 +290,10 @@ class _WarningCard extends StatelessWidget {
                 ),
                 SizedBox(height: 4),
                 Text(
-                  'รูม่านตาไม่เท่ากันที่เกิดขึ้นใหม่หรือแตกต่างจากเดิมชัดเจน การตอบสนองต่อแสงช้าลง '
-                  'หรือรูม่านตาขยายและไม่ตอบสนองต่อแสง ควรประเมินซ้ำและรายงานแพทย์ทันที '
-                  'เพราะอาจเป็นสัญญาณของ neurological deterioration',
+                  'หากพบรูม่านตาไม่เท่ากันที่เกิดขึ้นใหม่ หรือแตกต่างจากเดิมชัดเจน '
+                  'การตอบสนองต่อแสงช้าลง ขนาดรูม่านตาเปลี่ยนแปลงและการตอบสนองต่อแสงเปลี่ยนแปลง '
+                  'ควรประเมินซ้ำและรายงานแพทย์ทันที เพราะอาจเป็นสัญญาณของ '
+                  'neurological deterioration',
                   style: TextStyle(fontSize: 13, height: 1.5, color: Color(0xFF8A3A33)),
                 ),
               ],

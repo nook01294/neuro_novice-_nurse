@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_background.dart';
+import '../widgets/intro_panel.dart';
 
 /// "ICP Warning" reference page — explains increased intracranial pressure
 /// (Monro–Kellie doctrine) and lists the early vs. late signs and symptoms
@@ -72,10 +73,10 @@ class _IntroText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text(
-      'ภาวะที่ความดันภายในกะโหลกศีรษะเพิ่มขึ้นจากปริมาตรของเนื้อสมอง เลือด หรือ CSF '
-      'ตามหลัก Monro–Kellie ค่า ICP ปกติในผู้ใหญ่ประมาณ 5–15 mmHg',
-      style: TextStyle(fontSize: 14.5, height: 1.6, color: AppColors.textOnBackground),
+    return const IntroPanel(
+      text:
+          'ภาวะที่ความดันภายในกะโหลกศีรษะเพิ่มขึ้นจากปริมาตรของเนื้อสมอง เลือด หรือ CSF '
+          'ตามหลัก Monro–Kellie ค่า ICP ปกติในผู้ใหญ่ประมาณ 5–15 mmHg',
     );
   }
 }

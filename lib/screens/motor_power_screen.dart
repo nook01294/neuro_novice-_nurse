@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import '../widgets/app_background.dart';
+import '../widgets/intro_panel.dart';
 
 /// "Motor Power" reference page — explains the Medical Research Council
 /// (MRC) muscle-strength scale used to compare left/right limb power and
@@ -20,6 +21,8 @@ class MotorPowerScreen extends StatelessWidget {
           _BodyDiagramCard(),
           SizedBox(height: 16),
           _MrcScaleCard(),
+          SizedBox(height: 8),
+          _SourceNote(),
           SizedBox(height: 12),
           _WarningCard(),
           SizedBox(height: 12),
@@ -35,11 +38,12 @@ class _IntroText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text(
-      'การประเมิน Motor power ใช้ตรวจหากล้ามเนื้ออ่อนแรง เปรียบเทียบแขน-ขาซ้ายและขวา '
-      'และติดตามการเปลี่ยนแปลงทางระบบประสาท โดยใช้ Medical Research Council (MRC) Scale '
-      'ให้คะแนน Grade 0–5 แบ่งเป็น 6 ระดับ',
-      style: TextStyle(fontSize: 14.5, height: 1.6, color: AppColors.textOnBackground),
+    return const IntroPanel(
+      text:
+          'การประเมิน Motor power ใช้ประเมินกำลังกล้ามเนื้อและค้นหาภาวะอ่อนแรง '
+          'โดยเปรียบเทียบแขน-ขาซ้ายและขวาและติดตามการเปลี่ยนแปลงทางระบบประสาท '
+          'ใช้ Medical Research Council (MRC) Scale แบ่งเป็น 6 ระดับ '
+          'ให้คะแนนตั้งแต่ Grade 0–5 (Paternostro-Sluga et al., 2008)',
     );
   }
 }
@@ -81,13 +85,21 @@ class _MrcGrade {
 class _MrcScaleCard extends StatelessWidget {
   const _MrcScaleCard();
 
+  static const _background = Color(0xFF5E9A6B);
+
   static const _grades = [
-    _MrcGrade(score: '0', description: 'ไม่มีการเคลื่อนไหวหรือการหดตัวของกล้ามเนื้อ'),
-    _MrcGrade(score: '1', description: 'กล้ามเนื้อหดตัว แต่ข้อไม่เคลื่อนไหว'),
-    _MrcGrade(score: '2', description: 'เคลื่อนไหวในแนวราบได้ แต่ต้านแรงโน้มถ่วงไม่ได้'),
-    _MrcGrade(score: '3', description: 'ต้านแรงโน้มถ่วงได้ แต่ต้านแรงผู้ตรวจไม่ได้'),
-    _MrcGrade(score: '4', description: 'ต้านแรงโน้มถ่วงและแรงผู้ตรวจได้ แต่กำลังไม่ปกติ'),
-    _MrcGrade(score: '5', description: 'กำลังกล้ามเนื้อปกติ ต้านแรงผู้ตรวจได้เต็มที่'),
+    _MrcGrade(score: '0', description: 'ไม่มีการเคลื่อนไหว/หดตัวของกล้ามเนื้อ'),
+    _MrcGrade(score: '1', description: 'มีการหดตัวของกล้ามเนื้อเล็กน้อย แต่ไม่เกิดการเคลื่อนไหวของข้อ'),
+    _MrcGrade(score: '2', description: 'สามารถเคลื่อนไหวกล้ามเนื้อในแนวราบได้ แต่ไม่สามารถต้านแรงโน้มถ่วง'),
+    _MrcGrade(
+      score: '3',
+      description: 'กำลังของกล้ามเนื้อสามารถต้านแรงโน้มถ่วง แต่ไม่สามารถต้านแรงของผู้ตรวจได้',
+    ),
+    _MrcGrade(
+      score: '4',
+      description: 'กำลังของกล้ามเนื้อสามารถต้านแรงโน้มถ่วงและแรงของผู้ตรวจได้แต่ไม่ปกติ',
+    ),
+    _MrcGrade(score: '5', description: 'กำลังกล้ามเนื้อปกติ และต้านแรงผู้ตรวจได้เต็มที่'),
   ];
 
   @override
@@ -96,7 +108,7 @@ class _MrcScaleCard extends StatelessWidget {
       width: double.infinity,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColors.primaryDark,
+        color: _background,
         borderRadius: BorderRadius.circular(AppColors.cardRadius),
         boxShadow: AppColors.cardShadow,
       ),
@@ -107,9 +119,11 @@ class _MrcScaleCard extends StatelessWidget {
             children: [
               Icon(Icons.assignment_rounded, color: Colors.white, size: 22),
               SizedBox(width: 10),
-              Text(
-                'เกณฑ์การให้คะแนน MRC',
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: Colors.white),
+              Flexible(
+                child: Text(
+                  'เกณฑ์การให้คะแนน MRC',
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w700, color: Colors.white),
+                ),
               ),
             ],
           ),
@@ -117,7 +131,10 @@ class _MrcScaleCard extends StatelessWidget {
           for (final grade in _grades) ...[
             _MrcGradeRow(grade: grade),
             if (grade != _grades.last)
-              Divider(height: 1, thickness: 1, color: Colors.white.withValues(alpha: 0.15)),
+              Padding(
+                padding: const EdgeInsets.only(left: _MrcGradeRow.pillWidth + 12),
+                child: Divider(height: 1, thickness: 1, color: Colors.white.withValues(alpha: 0.2)),
+              ),
           ],
         ],
       ),
@@ -126,6 +143,8 @@ class _MrcScaleCard extends StatelessWidget {
 }
 
 class _MrcGradeRow extends StatelessWidget {
+  static const double pillWidth = 78;
+
   final _MrcGrade grade;
 
   const _MrcGradeRow({required this.grade});
@@ -133,30 +152,97 @@ class _MrcGradeRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 11),
+      padding: const EdgeInsets.symmetric(vertical: 9),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            width: 34,
-            height: 34,
+            width: pillWidth,
+            padding: const EdgeInsets.symmetric(vertical: 6),
             alignment: Alignment.center,
             decoration: BoxDecoration(
-              color: AppColors.primaryDark,
               border: Border.all(color: Colors.white, width: 1.6),
-              borderRadius: BorderRadius.circular(10),
+              borderRadius: BorderRadius.circular(12),
             ),
             child: Text(
-              grade.score,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+              'Grade ${grade.score}',
+              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
             ),
           ),
-          const SizedBox(width: 14),
+          const SizedBox(width: 12),
           Expanded(
             child: Text(
               grade.description,
-              style: const TextStyle(fontSize: 13.5, height: 1.4, color: Colors.white),
+              style: const TextStyle(fontSize: 13, height: 1.4, color: Colors.white),
             ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _SourceNote extends StatelessWidget {
+  const _SourceNote();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 4),
+      child: Text(
+        'หมายเหตุ. แปลและเรียบเรียงจาก Paternostro-Sluga et al. (2008)',
+        style: TextStyle(fontSize: 12, color: AppColors.textMuted),
+      ),
+    );
+  }
+}
+
+/// Tinted, outlined note card with an icon-led title, used for the
+/// "ข้อควรระวัง" and "ควรพิจารณา" notes at the bottom of the page.
+class _NoteCard extends StatelessWidget {
+  final IconData icon;
+  final String title;
+  final String text;
+  final Color accent;
+  final Color background;
+
+  const _NoteCard({
+    required this.icon,
+    required this.title,
+    required this.text,
+    required this.accent,
+    required this.background,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.all(14),
+      decoration: BoxDecoration(
+        color: background,
+        borderRadius: BorderRadius.circular(AppColors.cardRadius),
+        border: Border.all(color: accent.withValues(alpha: 0.35)),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Icon(icon, color: accent, size: 26),
+              const SizedBox(width: 10),
+              Flexible(
+                child: Text(
+                  title,
+                  style: TextStyle(fontSize: 17, fontWeight: FontWeight.w800, color: accent),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 6),
+          Text(
+            text,
+            style: const TextStyle(fontSize: 13, height: 1.5, color: AppColors.textDark),
           ),
         ],
       ),
@@ -169,38 +255,14 @@ class _WarningCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: const Color(0xFFFDECEA),
-        borderRadius: BorderRadius.circular(AppColors.cardRadius),
-        boxShadow: AppColors.cardShadow,
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Icon(Icons.error_rounded, color: AppColors.danger, size: 24),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text(
-                  'ข้อควรระวัง',
-                  style: TextStyle(fontSize: 15.5, fontWeight: FontWeight.w800, color: AppColors.danger),
-                ),
-                SizedBox(height: 4),
-                Text(
-                  'กำลังกล้ามเนื้อลดลงจากค่าพื้นฐาน หรือแขน-ขาอ่อนแรงไม่เท่ากันที่เกิดขึ้นใหม่ '
-                  'ถือเป็น neurological change ควรประเมินซ้ำและรายงานทันที',
-                  style: TextStyle(fontSize: 13, height: 1.5, color: Color(0xFF8A3A33)),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+    return const _NoteCard(
+      icon: Icons.warning_rounded,
+      title: 'ข้อควรระวัง',
+      text: 'หากกำลังกล้ามเนื้อลดลงจากค่าพื้นฐาน หรือพบแขน-ขาอ่อนแรงเกิดขึ้นใหม่ '
+          'ควรถือเป็น neurological change ประเมินซ้ำร่วมกับ neurological signs อื่น '
+          'และรายงานแพทย์/ทีมรักษาตามความเร่งด่วน',
+      accent: Color(0xFFE0661F),
+      background: Color(0xFFFDF3E7),
     );
   }
 }
@@ -208,49 +270,17 @@ class _WarningCard extends StatelessWidget {
 class _FactorsCard extends StatelessWidget {
   const _FactorsCard();
 
-  static const _factors = [
-    'ความปวด',
-    'การบาดเจ็บ',
-    'ข้อจำกัดการเคลื่อนไหว',
-    'ระดับความรู้สึกตัว',
-    'การเข้าใจคำสั่ง',
-    'ยากดประสาท',
-    'ยาคลายกล้ามเนื้อ',
-  ];
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: const Color(0xFFEDF9F3),
-        borderRadius: BorderRadius.circular(AppColors.cardRadius),
-        border: Border.all(color: AppColors.primary.withValues(alpha: 0.25)),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Icon(Icons.lightbulb_rounded, color: Color(0xFFC97A1E), size: 22),
-          const SizedBox(width: 10),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'ปัจจัยที่อาจทำให้ผลคลาดเคลื่อน',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: AppColors.primaryDark),
-                ),
-                const SizedBox(height: 6),
-                Text(
-                  _factors.join(' • '),
-                  style: const TextStyle(fontSize: 13, height: 1.5, color: AppColors.textDark),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
+    return const _NoteCard(
+      icon: Icons.search_rounded,
+      title: 'ควรพิจารณา',
+      text: 'ควรพิจารณาปัจจัยที่อาจรบกวนการประเมิน เช่น ความปวด '
+          'การบาดเจ็บหรือข้อจำกัดของระบบกระดูกและกล้ามเนื้อ การจัดท่า '
+          'ความร่วมมือและความเข้าใจคำสั่งของผู้ป่วย รวมถึงระดับความรู้สึกตัว'
+          'และยาที่มีผลต่อระบบประสาท เพราะอาจทำให้ผลการประเมินคลาดเคลื่อน',
+      accent: Color(0xFF1E8A8A),
+      background: Color(0xFFEFF8FA),
     );
   }
 }
