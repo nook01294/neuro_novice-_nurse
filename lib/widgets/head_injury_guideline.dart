@@ -257,7 +257,7 @@ class ChecklistCard extends StatelessWidget {
 }
 
 /// Divided list of check-marked nursing actions; the body of
-/// [ChecklistCard], also used on its own inside other cards.
+/// [ChecklistCard].
 class ChecklistList extends StatelessWidget {
   final List<ChecklistItem> items;
 
@@ -278,18 +278,18 @@ class ChecklistList extends StatelessWidget {
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(vertical: 11),
-                  child: Row(
+                  child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Icon(Icons.check_circle_rounded, color: AppColors.primary, size: 20),
-                      const SizedBox(width: 10),
-                      Icon(items[i].icon, color: AppColors.primaryDark, size: 20),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Icon(Icons.check_circle_rounded, color: AppColors.primary, size: 20),
+                          const SizedBox(width: 10),
+                          Icon(items[i].icon, color: AppColors.primaryDark, size: 20),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: Text(
                               items[i].text,
                               style: const TextStyle(
                                 fontSize: 13.5,
@@ -297,13 +297,18 @@ class ChecklistList extends StatelessWidget {
                                 color: AppColors.textDark,
                               ),
                             ),
-                            if (items[i].details.isNotEmpty) ...[
-                              const SizedBox(height: 6),
-                              _ChecklistDetails(details: items[i].details),
-                            ],
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
+                      // Sub-items start under the item's icon (past the 20px
+                      // check + 10px gap), so they get more line width.
+                      if (items[i].details.isNotEmpty) ...[
+                        const SizedBox(height: 6),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 30),
+                          child: _ChecklistDetails(details: items[i].details),
+                        ),
+                      ],
                     ],
                   ),
                 ),

@@ -95,70 +95,38 @@ class _ImmediateCareCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Heading uses the same warning icon and colors as the
+    // "เฝ้าระวังภาวะทรุดลงและ IICP" card (WarningSignsCard).
     return GuidelineCard(
       background: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           const GuidelineCardHeading(
-            icon: Icons.event_note_rounded,
+            icon: Icons.warning_rounded,
             title: 'ประเมินและช่วยเหลือทันที',
-            iconColor: AppColors.primaryDark,
-            iconBackground: Color(0xFFDDF3E7),
-            titleColor: AppColors.primaryDark,
+            iconColor: Color(0xFFC97A1E),
+            iconBackground: Color(0xFFFBE4C4),
+            titleColor: Color(0xFFC97A1E),
           ),
           const SizedBox(height: 10),
-          const ChecklistList(
+          const BulletList(
             items: [
-              ChecklistItem(
-                icon: Icons.notifications_active_rounded,
-                text: 'ช่วยเหลือตามหลัก ABCDE และรายงานแพทย์/ทีมที่เกี่ยวข้องทันที',
-              ),
-              ChecklistItem(
-                icon: Icons.air_rounded,
-                text: 'ดูแลทางเดินหายใจให้โล่ง ป้องกันภาวะพร่องออกซิเจน',
-              ),
-              ChecklistItem(
-                icon: Icons.medical_services_rounded,
-                text: 'เตรียมอุปกรณ์และช่วยใส่ท่อช่วยหายใจเมื่อมีข้อบ่งชี้ '
-                    'โดยเฉพาะ GCS ≤8 หรือปกป้องทางเดินหายใจไม่ได้',
-              ),
-              ChecklistItem(
-                icon: Icons.monitor_heart_rounded,
-                text: 'ติดตามสัญญาณชีพและ SpO₂ อย่างใกล้ชิด',
-              ),
+              'ช่วยเหลือตามหลัก ABCDE และรายงานแพทย์/ทีมที่เกี่ยวข้องทันที',
+              'ดูแลทางเดินหายใจให้โล่ง ป้องกันภาวะพร่องออกซิเจน',
+              'เตรียมอุปกรณ์และช่วยใส่ท่อช่วยหายใจเมื่อมีข้อบ่งชี้ '
+                  'โดยเฉพาะ GCS ≤8 หรือปกป้องทางเดินหายใจไม่ได้',
+              'ติดตามสัญญาณชีพและ SpO₂ อย่างใกล้ชิด',
+              'ประเมิน neurological signs: GCS (E, V, M), Pupil, Motor response',
             ],
           ),
-          const SizedBox(height: 10),
-          Container(
-            width: double.infinity,
-            padding: const EdgeInsets.all(12),
-            decoration: BoxDecoration(
-              color: const Color(0xFFF3FBF7),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: AppColors.primary.withValues(alpha: 0.3)),
-            ),
-            child: const Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'ประเมิน neurological signs: GCS (E, V, M), Pupil, Motor response',
-                  style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.primaryDark,
-                  ),
-                ),
-                SizedBox(height: 10),
-                TimelineArrowRow(
-                  boxes: [
-                    CompactTimelineBox(primary: 'ทุก 15–30 นาที', secondary: 'ในระยะวิกฤต'),
-                    CompactTimelineBox(primary: 'ปรับตามอาการ', secondary: 'คำสั่งแพทย์'),
-                    CompactTimelineBox(primary: 'และแนวปฏิบัติ', secondary: 'ของหน่วยงาน'),
-                  ],
-                ),
-              ],
-            ),
+          const SizedBox(height: 6),
+          const TimelineArrowRow(
+            boxes: [
+              CompactTimelineBox(primary: 'ทุก 15–30 นาที', secondary: 'ในระยะวิกฤต'),
+              CompactTimelineBox(primary: 'ปรับตามอาการ', secondary: 'คำสั่งแพทย์'),
+              CompactTimelineBox(primary: 'และแนวปฏิบัติ', secondary: 'ของหน่วยงาน'),
+            ],
           ),
         ],
       ),
@@ -177,12 +145,12 @@ class _CushingSection extends StatelessWidget {
   const _CushingSection();
 
   static const _signs = [
-    _CushingSign(icon: Icons.arrow_upward_rounded, text: 'ความดันโลหิตสูงขึ้น โดยเฉพาะ Systolic BP'),
-    _CushingSign(icon: Icons.show_chart_rounded, text: 'Pulse pressure กว้างขึ้น'),
     _CushingSign(
-      icon: Icons.monitor_heart_rounded,
-      text: 'ชีพจรช้าลง (Bradycardia) และการหายใจผิดปกติ/ไม่สม่ำเสมอ',
+      icon: Icons.arrow_upward_rounded,
+      text: 'ความดันโลหิตสูงขึ้นโดยเฉพาะ SBP และ Pulse pressure กว้างขึ้น',
     ),
+    _CushingSign(icon: Icons.monitor_heart_rounded, text: 'ชีพจรช้าลง (Bradycardia)'),
+    _CushingSign(icon: Icons.show_chart_rounded, text: 'การหายใจผิดปกติ/ไม่สม่ำเสมอ'),
   ];
 
   @override
@@ -240,6 +208,7 @@ class _CushingTile extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFFFDECEA),
         borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AppColors.danger.withValues(alpha: 0.35)),
       ),
       child: Column(
         children: [

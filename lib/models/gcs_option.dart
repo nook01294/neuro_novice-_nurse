@@ -121,11 +121,11 @@ extension GcsSeverityLabel on GcsSeverity {
   String get label {
     switch (this) {
       case GcsSeverity.mild:
-        return 'Mild (บาดเจ็บเล็กน้อย)';
+        return 'Mild\n(บาดเจ็บเล็กน้อย)';
       case GcsSeverity.moderate:
-        return 'Moderate (บาดเจ็บปานกลาง)';
+        return 'Moderate\n(บาดเจ็บปานกลาง)';
       case GcsSeverity.severe:
-        return 'Severe (บาดเจ็บรุนแรง)';
+        return 'Severe\n(บาดเจ็บรุนแรง)';
     }
   }
 }

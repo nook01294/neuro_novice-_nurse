@@ -82,7 +82,7 @@ class ModerateHeadInjuryScreen extends StatelessWidget {
                           icon: Icons.directions_walk_rounded,
                           label: 'พลัดตกหกล้ม',
                           text: 'ปรับเตียงให้อยู่ระดับต่ำ ยกไม้กั้นเตียงตามความเหมาะสม '
-                              'และช่วยเหลือเมื่อมีลุก นั่ง หรือเดิน',
+                              'และช่วยเหลือเมื่อลุกนั่ง หรือเดิน',
                         ),
                         ChecklistDetail(
                           icon: Icons.air_rounded,

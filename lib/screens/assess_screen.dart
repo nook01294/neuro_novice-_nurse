@@ -56,6 +56,8 @@ class AssessScreen extends StatelessWidget {
             title: 'Score',
             description: 'ให้คะแนนจากการตอบสนองที่ดีที่สุด',
           ),
+          SizedBox(height: 8),
+          _SourceNote(),
         ],
       ),
     );
@@ -68,6 +70,21 @@ class _IntroText extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const IntroPanel(text: 'การประเมินระดับความรู้สึกตัวด้วย GCS ประกอบด้วย 4 ขั้นตอนสำคัญ');
+  }
+}
+
+class _SourceNote extends StatelessWidget {
+  const _SourceNote();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Padding(
+      padding: EdgeInsets.symmetric(horizontal: 4),
+      child: Text(
+        'ที่มา: ราชวิทยาลัยประสาทศัลยแพทย์แห่งประเทศไทย และคณะ (2562)',
+        style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppColors.textMuted),
+      ),
+    );
   }
 }
 
@@ -99,37 +116,45 @@ class _StepCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Container(
-                width: 34,
-                height: 34,
-                alignment: Alignment.center,
-                decoration: const BoxDecoration(
-                  color: AppColors.primaryDark,
-                  shape: BoxShape.circle,
-                ),
-                child: Text(
-                  number,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(10),
+            decoration: BoxDecoration(
+              color: const Color(0xFFEDF9F3),
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 34,
+                  height: 34,
+                  alignment: Alignment.center,
+                  decoration: const BoxDecoration(
+                    color: AppColors.primaryDark,
+                    shape: BoxShape.circle,
+                  ),
+                  child: Text(
+                    number,
+                    style: const TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 12),
-              Flexible(
-                child: Text(
-                  title,
-                  style: const TextStyle(
-                    fontSize: 21,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textDark,
+                const SizedBox(width: 12),
+                Flexible(
+                  child: Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 21,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.textDark,
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           const SizedBox(height: 10),
           Text(
